@@ -40,13 +40,7 @@ public class MessageService {
     public void addMessage(Authentication authentication, ChatForm chatForm){
         ChatMessage message = new ChatMessage();
         message.setUsername(authentication.getName());
-        if(chatForm.getMessageType().equalsIgnoreCase("Say")){
-            message.setMessageText(chatForm.getMessageText());
-        }else if(chatForm.getMessageType().equalsIgnoreCase("Shout")){
-            message.setMessageText(chatForm.getMessageText().toUpperCase());
-        }else if(chatForm.getMessageType().equalsIgnoreCase("Whisper")){
-            message.setMessageText(chatForm.getMessageText().toLowerCase());
-        }
+        message.setMessageText(chatForm.getMessageText());
         message.setTimestamp(LocalDateTime.now());
         messageMapper.insert(message);
     }

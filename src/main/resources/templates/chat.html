@@ -24,36 +24,40 @@
          #header {
             text-align: center;
         }
+
+        .footer-div {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <h1 id="header">CHAT BOT</h1>
 <span><label><a th:href="@{/logout}">Log out</a></label></span>
-    <div class="container">
-        <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}">
-            <p>
-                <span th:text="${msg.timestamp + ' '}"></span><strong><span th:text="${msg.username + ': '}"></span></strong>
-                <span th:text="${msg.messageText}"></span>
-            </p>
-        </div>
-        <footer class="fixed-bottom">
-                <form action="#" th:action="@{/chat}" th:object="${newChat}" method="post" class="form-inline">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label for="messageText">Message Text:</label>
-                        <input id="messageText" type="text" th:field="*{messageText}">
-                    </div>
-                    <div class="form-group mx-sm-3 mb-2">
-                        <label for="messageType">Message Type: </label>
-                        <select id="messageType" th:field="*{messageType}">
-                            <option th:value="Say" selected>Say</option>
-                            <option th:value="Shout">Shout</option>
-                            <option th:value="Whisper">Whisper</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2">Send</button>
-                </form>
-        </footer>
+<div class="container">
+    <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}">
+        <p>
+            <span th:text="${msg.timestamp + ' '}"></span><strong><span th:text="${msg.username + ': '}"></span></strong>
+            <span th:text="${msg.messageText}"></span>
+        </p>
     </div>
+    <div class="footer-div row">
+        <div class="col-sm-2">
+        </div>
+        <form action="#" th:action="@{/chat}" th:object="${newChat}" method="post" class="col-sm-8 row g-3">
+            <div class="form-group col-md-10">
+                <label for="messageText" class="form-label" hidden>Message Text:</label>
+                <input id="messageText" class="form-control" type="text" th:field="*{messageText}">
+            </div>
+            <button type="submit" class="btn btn-primary col-md-2 form-control">Send</button>
+        </form>
+        <div class="col-sm-2">
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
