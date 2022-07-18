@@ -1,6 +1,6 @@
 package com.project.pingme.dto;
 
-public class Message {
+public class MessageDTO {
     private String username;
     private String messageText;
     private String messageTime;

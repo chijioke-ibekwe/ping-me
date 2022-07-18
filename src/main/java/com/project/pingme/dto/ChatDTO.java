@@ -1,6 +1,6 @@
 package com.project.pingme.dto;
 
-public class ChatForm {
+public class ChatDTO {
     private String messageText;
 
     public String getMessageText() {

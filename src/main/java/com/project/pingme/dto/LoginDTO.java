@@ -1,6 +1,6 @@
 package com.project.pingme.dto;
 
-public class LoginForm {
+public class LoginDTO {
     private String username;
     private String password;
 

@@ -1,8 +1,8 @@
 package com.project.pingme.service;
 
-import com.project.pingme.dto.ChatForm;
+import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.entity.ChatMessage;
-import com.project.pingme.dto.Message;
+import com.project.pingme.dto.MessageDTO;
 import com.project.pingme.repository.ChatMessageRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -22,12 +22,12 @@ public class MessageService {
         this.chatMessageRepository = chatMessageRepository;
     }
 
-    public List<Message> getMessages() {
+    public List<MessageDTO> getMessages() {
        List<ChatMessage> allChatMessages = chatMessageRepository.findAll();
-       List<Message> allMessages = new ArrayList<>();
+       List<MessageDTO> allMessages = new ArrayList<>();
 
        allChatMessages.forEach(chatMessage -> {
-           Message message = new Message();
+           MessageDTO message = new MessageDTO();
            message.setMessageText(chatMessage.getMessageText());
            message.setTimestamp(formatDateTime(chatMessage.getMessageTime()));
 
@@ -38,9 +38,9 @@ public class MessageService {
     }
 
     @Transactional
-    public void addMessage(Authentication authentication, ChatForm chatForm){
+    public void addMessage(Authentication authentication, ChatDTO chatDTO){
         ChatMessage message = new ChatMessage();
-        message.setMessageText(chatForm.getMessageText());
+        message.setMessageText(chatDTO.getMessageText());
         message.setMessageTime(LocalDateTime.now());
         chatMessageRepository.save(message);
     }

@@ -1,6 +1,6 @@
 package com.project.pingme.controller;
 
-import com.project.pingme.dto.SignupForm;
+import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -20,24 +20,26 @@ public class SignupController {
     }
 
     @GetMapping
-    public String getSignUpPage(@ModelAttribute("signupForm") SignupForm signupForm, Model model){
+    public String getSignUpPage(@ModelAttribute("signupForm") SignupDTO signupDTO, Model model){
         return "signup";
     }
 
     @PostMapping
-    public String createAccount(@ModelAttribute("signupForm") SignupForm signupForm,
+    public String createAccount(@ModelAttribute("signupForm") SignupDTO signupDTO,
                                 Model model){
-        User user = new User(signupForm.getUsername(), null, signupForm.getPassword(), signupForm.getFirstName(),
-                signupForm.getLastName(), null, null);
 
         String signupError = null;
 
-        if(userService.isAvailable(signupForm.getUsername())){
+        if(userService.isAvailable(signupDTO.getUsername())){
             signupError = "Username already exists";
         }
 
+        if(!signupDTO.getPassword().equals(signupDTO.getConfirmPassword())){
+            signupError = "Password fields have to match";
+        }
+
         if (signupError == null) {
-            Long rowsAdded = userService.createUser(user);
+            Long rowsAdded = userService.createUser(signupDTO);
             if (rowsAdded < 1) {
                 signupError = "There was an error signing you up. Please try again.";
             }

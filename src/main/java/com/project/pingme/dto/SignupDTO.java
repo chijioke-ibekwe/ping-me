@@ -1,6 +1,6 @@
 package com.project.pingme.dto;
 
-public class SignupForm {
+public class SignupDTO {
     private String firstName;
     private String lastName;
     private String username;
