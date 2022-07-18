@@ -1,7 +1,7 @@
 package com.project.pingme.controller;
 
 import com.project.pingme.dto.SignupForm;
-import com.project.pingme.dto.User;
+import com.project.pingme.entity.User;
 import com.project.pingme.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,8 +27,8 @@ public class SignupController {
     @PostMapping
     public String createAccount(@ModelAttribute("signupForm") SignupForm signupForm,
                                 Model model){
-        User user = new User(null, signupForm.getUsername(), null, signupForm.getPassword(), signupForm.getFirstName(),
-                signupForm.getLastName());
+        User user = new User(signupForm.getUsername(), null, signupForm.getPassword(), signupForm.getFirstName(),
+                signupForm.getLastName(), null, null);
 
         String signupError = null;
 
@@ -37,7 +37,7 @@ public class SignupController {
         }
 
         if (signupError == null) {
-            int rowsAdded = userService.createUser(user);
+            Long rowsAdded = userService.createUser(user);
             if (rowsAdded < 1) {
                 signupError = "There was an error signing you up. Please try again.";
             }

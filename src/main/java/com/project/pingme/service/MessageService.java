@@ -1,11 +1,12 @@
 package com.project.pingme.service;
 
 import com.project.pingme.dto.ChatForm;
-import com.project.pingme.dto.ChatMessage;
+import com.project.pingme.entity.ChatMessage;
 import com.project.pingme.dto.Message;
-import com.project.pingme.mapper.MessageMapper;
+import com.project.pingme.repository.ChatMessageRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,21 +16,20 @@ import java.util.List;
 @Component
 public class MessageService {
 
-    private MessageMapper messageMapper;
+    private ChatMessageRepository chatMessageRepository;
 
-    public MessageService(MessageMapper messageMapper) {
-        this.messageMapper = messageMapper;
+    public MessageService(ChatMessageRepository chatMessageRepository) {
+        this.chatMessageRepository = chatMessageRepository;
     }
 
     public List<Message> getMessages() {
-       List<ChatMessage> allChatMessages = messageMapper.getAllMessages();
+       List<ChatMessage> allChatMessages = chatMessageRepository.findAll();
        List<Message> allMessages = new ArrayList<>();
 
        allChatMessages.forEach(chatMessage -> {
            Message message = new Message();
-           message.setUsername(chatMessage.getUsername());
            message.setMessageText(chatMessage.getMessageText());
-           message.setTimestamp(formatDateTime(chatMessage.getTimestamp()));
+           message.setTimestamp(formatDateTime(chatMessage.getMessageTime()));
 
            allMessages.add(message);
        });
@@ -37,12 +37,12 @@ public class MessageService {
        return allMessages;
     }
 
+    @Transactional
     public void addMessage(Authentication authentication, ChatForm chatForm){
         ChatMessage message = new ChatMessage();
-        message.setUsername(authentication.getName());
         message.setMessageText(chatForm.getMessageText());
-        message.setTimestamp(LocalDateTime.now());
-        messageMapper.insert(message);
+        message.setMessageTime(LocalDateTime.now());
+        chatMessageRepository.save(message);
     }
 
     private String formatDateTime(LocalDateTime localDateTime) {

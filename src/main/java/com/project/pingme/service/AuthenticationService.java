@@ -1,21 +1,22 @@
 package com.project.pingme.service;
 
-import com.project.pingme.dto.User;
-import com.project.pingme.mapper.UserMapper;
+import com.project.pingme.entity.User;
+import com.project.pingme.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 @Service
 public class AuthenticationService implements AuthenticationProvider {
-    private UserMapper userMapper;
+    private UserRepository userRepository;
     private HashService hashService;
 
-    public AuthenticationService(UserMapper userMapper, HashService hashService) {
-        this.userMapper = userMapper;
+    public AuthenticationService(UserRepository userRepository, HashService hashService) {
+        this.userRepository = userRepository;
         this.hashService = hashService;
     }
 
@@ -24,7 +25,9 @@ public class AuthenticationService implements AuthenticationProvider {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        User user = userMapper.getUser(username);
+        User user = userRepository.findByUsername(username).orElseThrow(() ->
+                new NoSuchElementException("User not found"));
+
         if(user != null){
             String encodedSalt = user.getSalt();
             String hashedPassword = hashService.getHashedValue(password, encodedSalt);

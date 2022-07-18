@@ -1,7 +1,8 @@
 package com.project.pingme.service;
 
-import com.project.pingme.dto.User;
-import com.project.pingme.mapper.UserMapper;
+import com.project.pingme.entity.User;
+import com.project.pingme.repository.UserContactRepository;
+import com.project.pingme.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -10,15 +11,15 @@ import java.util.Objects;
 
 @Service
 public class UserService {
-    private UserMapper userMapper;
+    private UserRepository userRepository;
     private HashService hashService;
 
-    public UserService(UserMapper userMapper, HashService hashService) {
-        this.userMapper = userMapper;
+    public UserService(UserRepository userRepository, HashService hashService) {
+        this.userRepository = userRepository;
         this.hashService = hashService;
     }
 
-    public int createUser(User user){
+    public Long createUser(User user){
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
 
@@ -26,11 +27,13 @@ public class UserService {
         String encodedSalt = Base64.getEncoder().encodeToString(salt);
         String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
 
-        return userMapper.insert(new User(null, user.getUsername(), encodedSalt, hashedPassword,
-                user.getFirstName(), user.getLastName()));
+        User user_ = userRepository.save(new User(user.getUsername(), encodedSalt, hashedPassword,
+                user.getFirstName(), user.getLastName(), null, null));
+
+        return user_.getId();
     }
 
     public boolean isAvailable(String username){
-        return Objects.nonNull(userMapper.getUser(username));
+        return Objects.nonNull(userRepository.findByUsername(username));
     }
 }
