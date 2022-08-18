@@ -1,9 +1,18 @@
 package com.project.pingme.entity;
 
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
+@SuperBuilder
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "chat_messages")
 public class ChatMessage {
 
@@ -20,45 +29,4 @@ public class ChatMessage {
     @ManyToOne
     @JoinColumn(name = "user_contact_id")
     private UserContact userContact;
-
-    public ChatMessage() {
-    }
-
-    public ChatMessage(String messageText, LocalDateTime messageTime, UserContact userContact) {
-        this.messageText = messageText;
-        this.messageTime = messageTime;
-        this.userContact = userContact;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getMessageText() {
-        return messageText;
-    }
-
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
-    }
-
-    public LocalDateTime getMessageTime() {
-        return messageTime;
-    }
-
-    public void setMessageTime(LocalDateTime messageTime) {
-        this.messageTime = messageTime;
-    }
-
-    public UserContact getUserContact() {
-        return userContact;
-    }
-
-    public void setUserContact(UserContact userContact) {
-        this.userContact = userContact;
-    }
 }
