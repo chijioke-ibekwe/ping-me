@@ -30,13 +30,14 @@ public class MessageService {
 
     public List<MessageDTO> getMessages(Long userContactId) {
         UserContact userContact = userContactRepository.findById(userContactId).orElseThrow(() ->
-                new EntityNotFoundException("Cannot find chat messages"));
+                new EntityNotFoundException("Cannot find contact"));
 
        List<ChatMessage> allChatMessages = userContact.getChatMessages();
        List<MessageDTO> allMessages = new ArrayList<>();
 
        allChatMessages.forEach(chatMessage -> {
            MessageDTO message = new MessageDTO();
+           message.setUserContactId(userContactId);
            message.setMessageText(chatMessage.getMessageText());
            message.setMessageTime(formatDateTime(chatMessage.getMessageTime()));
 
@@ -48,9 +49,13 @@ public class MessageService {
 
     @Transactional
     public void addMessage(Authentication authentication, ChatDTO chatDTO){
+        UserContact userContact = userContactRepository.findById(chatDTO.getUserContactId()).orElseThrow(() ->
+                new EntityNotFoundException("Cannot find contact"));
+
         ChatMessage message = new ChatMessage();
         message.setMessageText(chatDTO.getMessageText());
         message.setMessageTime(LocalDateTime.now());
+        message.setUserContact(userContact);
         chatMessageRepository.save(message);
     }
 

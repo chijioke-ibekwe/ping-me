@@ -1,0 +1,36 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+ #header {
+    text-align: center;
+}
+
+.footer-div {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+html, body, .container{
+    height: 100%;
+}
+
+#send-button{
+    width: 100%;
+}
+
+#message-row{
+    height: 93%;
+}
+
+#message-column{
+    max-height: inherit;
+    margin-top: 10px;
+}
+
+#logout{
+    margin-top: 10px;
+}

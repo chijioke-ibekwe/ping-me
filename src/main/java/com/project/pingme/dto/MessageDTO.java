@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDTO {
-
+    private Long userContactId;
     private String username;
     private String messageText;
     private String messageTime;

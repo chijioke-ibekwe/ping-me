@@ -10,45 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
-
-         #header {
-            text-align: center;
-        }
-
-        .footer-div {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-        }
-
-        html, body, .container{
-            height: 100%;
-        }
-
-        #send-button{
-            width: 100%;
-        }
-
-        #message-row{
-            height: 93%;
-        }
-
-        #message-column{
-            max-height: inherit;
-            margin-top: 10px;
-        }
-
-        #logout{
-            margin-top: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 </head>
 <body>
     <div class="container">
@@ -59,7 +21,7 @@
             <div class="col-8" id="message-column">
                 <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}" class="col-6">
                     <p>
-                        <span th:text="${msg.timestamp + ' '}"></span><strong><span th:text="${msg.username + ': '}"></span></strong>
+                        <span th:text="${msg.messageTime + ' '}"></span><strong><span>You</span></strong>
                         <span th:text="${msg.messageText}"></span>
                     </p>
                 </div>
@@ -75,6 +37,7 @@
                 <form action="#" th:action="@{/chat}" th:object="${newChat}" method="post" class="row g-3">
                     <div class="col-9">
                         <label for="messageText" class="form-label" hidden>Message Text:</label>
+                        <input type="hidden" name="userContactId" id="user-contact-id" th:field="*{userContactId}">
                         <input id="messageText" class="form-control" type="text" th:field="*{messageText}">
                     </div>
                     <div class="col-3">
