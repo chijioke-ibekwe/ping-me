@@ -20,12 +20,12 @@ public class SignupController {
     }
 
     @GetMapping
-    public String getSignUpPage(@ModelAttribute("signupForm") SignupDTO signupDTO, Model model){
+    public String getSignUpPage(@ModelAttribute("signupDTO") SignupDTO signupDTO, Model model){
         return "signup";
     }
 
     @PostMapping
-    public String createAccount(@ModelAttribute("signupForm") SignupDTO signupDTO,
+    public String createAccount(@ModelAttribute("signupDTO") SignupDTO signupDTO,
                                 Model model){
 
         String signupError = null;

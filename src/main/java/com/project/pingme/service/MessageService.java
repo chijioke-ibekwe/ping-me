@@ -3,11 +3,14 @@ package com.project.pingme.service;
 import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.entity.ChatMessage;
 import com.project.pingme.dto.MessageDTO;
+import com.project.pingme.entity.UserContact;
 import com.project.pingme.repository.ChatMessageRepository;
+import com.project.pingme.repository.UserContactRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -17,19 +20,25 @@ import java.util.List;
 public class MessageService {
 
     private ChatMessageRepository chatMessageRepository;
+    private UserContactRepository userContactRepository;
 
-    public MessageService(ChatMessageRepository chatMessageRepository) {
+    public MessageService(ChatMessageRepository chatMessageRepository,
+                          UserContactRepository userContactRepository) {
         this.chatMessageRepository = chatMessageRepository;
+        this.userContactRepository = userContactRepository;
     }
 
-    public List<MessageDTO> getMessages() {
-       List<ChatMessage> allChatMessages = chatMessageRepository.findAll();
+    public List<MessageDTO> getMessages(Long userContactId) {
+        UserContact userContact = userContactRepository.findById(userContactId).orElseThrow(() ->
+                new EntityNotFoundException("Cannot find chat messages"));
+
+       List<ChatMessage> allChatMessages = userContact.getChatMessages();
        List<MessageDTO> allMessages = new ArrayList<>();
 
        allChatMessages.forEach(chatMessage -> {
            MessageDTO message = new MessageDTO();
            message.setMessageText(chatMessage.getMessageText());
-           message.setTimestamp(formatDateTime(chatMessage.getMessageTime()));
+           message.setMessageTime(formatDateTime(chatMessage.getMessageTime()));
 
            allMessages.add(message);
        });
