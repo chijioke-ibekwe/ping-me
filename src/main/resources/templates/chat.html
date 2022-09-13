@@ -21,13 +21,18 @@
             <div class="col-8" id="message-column">
                 <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}" class="col-6">
                     <p>
-                        <span th:text="${msg.messageTime + ' '}"></span><strong><span>You</span></strong>
+                        <span th:text="${msg.messageTime + ' '}"></span>
+                        <strong>
+                            <span th:if="${msg.sender.equals(msg.username)}">You</span>
+                            <span th:text="${msg.sender}" th:unless="${msg.sender.equals(msg.username)}"></span>
+                        </strong>
                         <span th:text="${msg.messageText}"></span>
                     </p>
                 </div>
                 <div class="col"></div>
             </div>
-            <div class="col">
+            <div class="col" id="contact">
+                <div class="col"><label><a th:href="@{/contact}">Contacts</a></label></div>
             </div>
         </div>
 
@@ -39,6 +44,7 @@
                         <label for="messageText" class="form-label" hidden>Message Text:</label>
                         <input type="hidden" name="userContactId" id="user-contact-id" th:field="*{userContactId}">
                         <input id="messageText" class="form-control" type="text" th:field="*{messageText}">
+                        <input type="hidden" name="username" th:field="*{username}">
                     </div>
                     <div class="col-3">
                         <button type="submit" class="btn btn-primary" id="send-button">Send</button>

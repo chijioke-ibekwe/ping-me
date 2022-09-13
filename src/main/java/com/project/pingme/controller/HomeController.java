@@ -25,8 +25,8 @@ public class HomeController {
 
     @GetMapping("/chat/{userContactId}")
     @PreAuthorize("isAuthenticated()")
-    public String getChat(@PathVariable Long userContactId, @ModelAttribute("newChat") ChatDTO chatform, Model model){
-        model.addAttribute("messages", messageService.getMessages(userContactId));
+    public String getChat(@PathVariable Long userContactId, @ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
+        model.addAttribute("messages", messageService.getMessages(authentication, userContactId));
         return "chat";
     }
 
@@ -35,7 +35,7 @@ public class HomeController {
     public String createChat(@ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
         messageService.addMessage(authentication, chatform);
         chatform.setMessageText("");
-        model.addAttribute("messages", messageService.getMessages(chatform.getUserContactId()));
+        model.addAttribute("messages", messageService.getMessages(authentication, chatform.getUserContactId()));
         return "chat";
     }
 

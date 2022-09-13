@@ -22,7 +22,8 @@
                 <div id="contact-header">Contacts</div>
                 <div th:each="contact : ${contacts}" class="col-6">
                     <p>
-                        <label><a th:href="@{/chat/{userContactId}(userContactId = ${contact.userContactId})}" th:text="${contact.firstName + ' ' + contact.lastName}"></a></label>
+                        <label><a th:href="@{/chat/{userContactId}(userContactId = ${contact.userContactId})}"
+                                  th:text="${contact.firstName + ' ' + contact.lastName}"></a></label>
                     </p>
                 </div>
                 <div class="col"></div>

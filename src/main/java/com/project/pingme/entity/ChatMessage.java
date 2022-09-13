@@ -26,6 +26,9 @@ public class ChatMessage {
     @Column(name = "message_time")
     private LocalDateTime messageTime;
 
+    @Column(name = "sender")
+    private String sender;
+
     @ManyToOne
     @JoinColumn(name = "user_contact_id")
     private UserContact userContact;

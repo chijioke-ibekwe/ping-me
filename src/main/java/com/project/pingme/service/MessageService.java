@@ -28,7 +28,7 @@ public class MessageService {
         this.userContactRepository = userContactRepository;
     }
 
-    public List<MessageDTO> getMessages(Long userContactId) {
+    public List<MessageDTO> getMessages(Authentication authentication, Long userContactId) {
         UserContact userContact = userContactRepository.findById(userContactId).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find contact"));
 
@@ -40,6 +40,8 @@ public class MessageService {
            message.setUserContactId(userContactId);
            message.setMessageText(chatMessage.getMessageText());
            message.setMessageTime(formatDateTime(chatMessage.getMessageTime()));
+           message.setSender(chatMessage.getSender());
+           message.setUsername(authentication.getName());
 
            allMessages.add(message);
        });
@@ -56,6 +58,8 @@ public class MessageService {
         message.setMessageText(chatDTO.getMessageText());
         message.setMessageTime(LocalDateTime.now());
         message.setUserContact(userContact);
+        message.setSender(authentication.getName());
+
         chatMessageRepository.save(message);
     }
 

@@ -14,4 +14,5 @@ public class MessageDTO {
     private String username;
     private String messageText;
     private String messageTime;
+    private String sender;
 }

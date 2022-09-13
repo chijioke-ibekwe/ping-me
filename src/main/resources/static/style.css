@@ -31,6 +31,20 @@ html, body, .container{
     margin-top: 10px;
 }
 
-#logout{
+#logout, #contact{
+    font-size: 20px;
     margin-top: 10px;
+}
+
+#my-messages{
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    padding: 10px;
+}
+
+#contact-header{
+    font-size: 25px;
+    margin-top: 30px;
+    margin-bottom: 20px;
 }
