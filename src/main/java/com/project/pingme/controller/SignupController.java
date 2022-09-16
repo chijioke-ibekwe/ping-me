@@ -1,7 +1,6 @@
 package com.project.pingme.controller;
 
 import com.project.pingme.dto.SignupDTO;
-import com.project.pingme.entity.User;
 import com.project.pingme.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

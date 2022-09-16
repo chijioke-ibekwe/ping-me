@@ -2,7 +2,9 @@ package com.project.pingme.controller;
 
 import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.service.MessageService;
-import com.project.pingme.service.UserService;
+import com.project.pingme.service.UserContactService;
+import com.project.pingme.service.impl.MessageServiceImpl;
+import com.project.pingme.service.impl.UserServiceImpl;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -16,11 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class HomeController {
 
     private MessageService messageService;
-    private UserService userService;
+    private UserContactService userContactService;
 
-    public HomeController(MessageService messageService, UserService userService) {
+    public HomeController(MessageService messageService, UserContactService userContactService) {
         this.messageService = messageService;
-        this.userService = userService;
+        this.userContactService = userContactService;
     }
 
     @GetMapping("/chat/{userContactId}")
@@ -42,7 +44,7 @@ public class HomeController {
     @GetMapping("/contact")
     @PreAuthorize("isAuthenticated()")
     public String getContacts(Authentication authentication, Model model){
-        model.addAttribute("contacts", userService.getContacts(authentication.getName()));
+        model.addAttribute("contacts", userContactService.getContacts(authentication.getName()));
         return "home";
     }
 }

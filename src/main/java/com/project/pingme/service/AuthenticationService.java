@@ -2,6 +2,7 @@ package com.project.pingme.service;
 
 import com.project.pingme.entity.User;
 import com.project.pingme.repository.UserRepository;
+import com.project.pingme.service.impl.HashServiceImpl;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,9 +14,9 @@ import java.util.NoSuchElementException;
 @Service
 public class AuthenticationService implements AuthenticationProvider {
     private UserRepository userRepository;
-    private HashService hashService;
+    private HashServiceImpl hashService;
 
-    public AuthenticationService(UserRepository userRepository, HashService hashService) {
+    public AuthenticationService(UserRepository userRepository, HashServiceImpl hashService) {
         this.userRepository = userRepository;
         this.hashService = hashService;
     }
