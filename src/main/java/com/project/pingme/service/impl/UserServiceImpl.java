@@ -2,7 +2,6 @@ package com.project.pingme.service.impl;
 
 import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.entity.User;
-import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.UserService;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,10 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
-    private UserContactRepository userContactRepository;
     private HashServiceImpl hashService;
 
-    public UserServiceImpl(UserRepository userRepository, UserContactRepository userContactRepository,
-                           HashServiceImpl hashService) {
+    public UserServiceImpl(UserRepository userRepository, HashServiceImpl hashService) {
         this.userRepository = userRepository;
-        this.userContactRepository = userContactRepository;
         this.hashService = hashService;
     }
 

@@ -6,6 +6,7 @@ import com.project.pingme.entity.UserContact;
 import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.UserContactService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -22,8 +23,8 @@ public class UserContactServiceImpl implements UserContactService {
     }
 
     @Override
-    public List<ContactDTO> getContacts(String username){
-        User user = userRepository.findByUsername(username).orElseThrow(() ->
+    public List<ContactDTO> getContacts(Authentication authentication){
+        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
                 new EntityNotFoundException("user not found"));
 
         List<UserContact> userContacts = userContactRepository.findByHostOrContact(user, user);

@@ -44,7 +44,7 @@ public class HomeController {
     @GetMapping("/contact")
     @PreAuthorize("isAuthenticated()")
     public String getContacts(Authentication authentication, Model model){
-        model.addAttribute("contacts", userContactService.getContacts(authentication.getName()));
+        model.addAttribute("contacts", userContactService.getContacts(authentication));
         return "home";
     }
 }
