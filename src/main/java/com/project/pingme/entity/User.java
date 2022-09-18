@@ -40,20 +40,4 @@ public class User {
 
     @OneToMany(mappedBy = "contact")
     private List<UserContact> contactInstances;
-
-    public User(String username,
-                String salt,
-                String password,
-                String firstName,
-                String lastName,
-                List<UserContact> hostInstances,
-                List<UserContact> contactInstances) {
-        this.username = username;
-        this.salt = salt;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.hostInstances = hostInstances;
-        this.contactInstances = contactInstances;
-    }
 }
