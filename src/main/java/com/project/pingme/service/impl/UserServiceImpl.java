@@ -8,6 +8,7 @@ import com.project.pingme.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -39,6 +40,11 @@ public class UserServiceImpl implements UserService {
                 signupDTO.getFirstName(), signupDTO.getLastName(), new ArrayList<>(), new ArrayList<>()));
 
         return _user.getId();
+    }
+
+    @Override
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
     }
 
     @Override

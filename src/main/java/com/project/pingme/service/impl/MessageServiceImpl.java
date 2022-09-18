@@ -3,10 +3,13 @@ package com.project.pingme.service.impl;
 import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.entity.ChatMessage;
 import com.project.pingme.dto.MessageDTO;
+import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
 import com.project.pingme.repository.ChatMessageRepository;
 import com.project.pingme.repository.UserContactRepository;
+import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.MessageService;
+import com.project.pingme.service.UserService;
 import com.project.pingme.util.Formatter;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -22,11 +25,14 @@ public class MessageServiceImpl implements MessageService {
 
     private ChatMessageRepository chatMessageRepository;
     private UserContactRepository userContactRepository;
+    private UserService userService;
 
     public MessageServiceImpl(ChatMessageRepository chatMessageRepository,
-                              UserContactRepository userContactRepository) {
+                              UserContactRepository userContactRepository,
+                              UserService userService) {
         this.chatMessageRepository = chatMessageRepository;
         this.userContactRepository = userContactRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -35,6 +41,7 @@ public class MessageServiceImpl implements MessageService {
                 new EntityNotFoundException("Cannot find contact"));
 
        List<ChatMessage> allChatMessages = userContact.getChatMessages();
+
        List<MessageDTO> allMessages = new ArrayList<>();
 
        allChatMessages.forEach(chatMessage -> {
@@ -43,7 +50,9 @@ public class MessageServiceImpl implements MessageService {
            message.setMessageText(chatMessage.getMessageText());
            message.setMessageTime(Formatter.formatDateTime(chatMessage.getMessageTime()));
            message.setSender(chatMessage.getSender());
-           message.setUsername(authentication.getName());
+
+           User user = userService.getUserByUsername(authentication.getName());
+           message.setUserFullName(Formatter.formatUserFullName(user));
 
            allMessages.add(message);
        });
@@ -61,7 +70,9 @@ public class MessageServiceImpl implements MessageService {
         message.setMessageText(chatDTO.getMessageText());
         message.setMessageTime(LocalDateTime.now());
         message.setUserContact(userContact);
-        message.setSender(authentication.getName());
+
+        User user = userService.getUserByUsername(authentication.getName());
+        message.setSender(Formatter.formatUserFullName(user));
 
         chatMessageRepository.save(message);
     }

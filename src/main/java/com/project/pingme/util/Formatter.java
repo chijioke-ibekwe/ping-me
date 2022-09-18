@@ -1,5 +1,7 @@
 package com.project.pingme.util;
 
+import com.project.pingme.entity.User;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -12,5 +14,9 @@ public class Formatter {
         } catch (Exception e) {
             return "N/A";
         }
+    }
+
+    public static String formatUserFullName(User user){
+        return user.getFirstName() + " " + user.getLastName();
     }
 }
