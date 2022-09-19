@@ -1,6 +1,5 @@
 # <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png" alt="icon" width="90" height="60"> Ping Me!
-Ping Me! is a chat application where users could connect with people they might know and exchange messages and media.
-It is a Spring Boot application built using the Spring MVC design pattern.
+Ping Me! is a chat application where users could find and connect with people they might know and exchange messages and media. It is a Spring Boot application built on the Spring MVC module.
 
 ## Getting Started
 ### Prerequisites
