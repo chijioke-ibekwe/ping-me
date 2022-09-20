@@ -46,7 +46,7 @@
         </div>
     </nav>
     <div class="container">
-        <div class="container">
+        <div class="container inner-container">
             <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}">
                 <div th:if="${msg.sender.equals(msg.userFullName)}" class="message-nested-div" id="host-nested-div">
                     <div class="sender-name">You</div>

@@ -45,6 +45,6 @@ public class HomeController {
     @PreAuthorize("isAuthenticated()")
     public String getContacts(Authentication authentication, Model model){
         model.addAttribute("contacts", userContactService.getContacts(authentication));
-        return "home";
+        return "contact";
     }
 }
