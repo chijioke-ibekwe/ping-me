@@ -1,5 +1,6 @@
 package com.project.pingme.entity;
 
+import com.project.pingme.enums.RequestStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -30,4 +31,7 @@ public class UserContact {
 
     @OneToMany(mappedBy = "userContact")
     private List<ChatMessage> chatMessages;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus requestStatus;
 }

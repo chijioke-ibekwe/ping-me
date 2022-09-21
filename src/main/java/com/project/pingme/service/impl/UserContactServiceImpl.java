@@ -3,6 +3,7 @@ package com.project.pingme.service.impl;
 import com.project.pingme.dto.ContactDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
+import com.project.pingme.enums.RequestStatus;
 import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.UserContactService;
@@ -27,7 +28,7 @@ public class UserContactServiceImpl implements UserContactService {
         User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
                 new EntityNotFoundException("user not found"));
 
-        List<UserContact> userContacts = userContactRepository.findByHostOrContact(user, user);
+        List<UserContact> userContacts = userContactRepository.findByHostOrContactAndRequestStatus(user, user, RequestStatus.ACCEPTED);
         List<ContactDTO> contacts = new ArrayList<>();
 
         userContacts.forEach(uc -> {

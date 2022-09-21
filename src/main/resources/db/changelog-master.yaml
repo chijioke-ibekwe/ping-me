@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       file: changelog/add-sender-column-to-chat-messages.sql
       relativeToChangelogFile: true
+  - include:
+      file: changelog/add-request-status-to-user-contact.sql
+      relativeToChangelogFile: true

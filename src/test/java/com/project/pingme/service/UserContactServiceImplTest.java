@@ -91,7 +91,7 @@ class UserContactServiceImplTest {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         when(userRepository.findByUsername(any())).thenReturn(Optional.of(userContact.getHost()));
-        when(userContactRepository.findByHostOrContact(any(User.class), any(User.class))).thenReturn(Arrays.asList(userContact));
+        when(userContactRepository.findByHostOrContactAndRequestStatus(any(User.class), any(User.class), any())).thenReturn(Arrays.asList(userContact));
 
         List<ContactDTO> result = userContactService.getContacts(authentication);
 
