@@ -24,19 +24,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/signup", "/css/**", "/js/**").permitAll()
+                .antMatchers("/", "/user/signup", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin()
-                .loginPage("/login")
+                .loginPage("/user/login")
                 .permitAll();
 
         http.formLogin()
                 .defaultSuccessUrl("/contact", true);
 
         http.logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/user/logout")
                 .permitAll()
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/user/login");
     }
 }

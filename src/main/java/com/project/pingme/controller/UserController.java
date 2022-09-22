@@ -10,20 +10,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/signup")
-public class SignupController {
+@RequestMapping("/user")
+public class UserController {
+
     private UserService userService;
 
-    public SignupController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping("/login")
+    public String getLoginPage(){
+        return "login";
+    }
+
+    @GetMapping("/logout")
+    public String logoutUser(){
+        return "login";
+    }
+
+    @GetMapping("/signup")
     public String getSignUpPage(@ModelAttribute("signupDTO") SignupDTO signupDTO, Model model){
         return "signup";
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public String createAccount(@ModelAttribute("signupDTO") SignupDTO signupDTO,
                                 Model model){
 

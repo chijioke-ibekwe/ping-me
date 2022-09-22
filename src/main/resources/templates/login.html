@@ -15,8 +15,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid d-flex">
-            <a class="navbar-brand" th:href="@{/login}">
-                <a class="navbar-brand" th:href="@{/login}">
+            <a class="navbar-brand" th:href="@{/}">
+                <a class="navbar-brand" th:href="@{/}">
                     <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png}" alt="icon" width="80" height="50">
                 </a>
             </a>
@@ -33,13 +33,13 @@
                     </li>
                 </ul>
             </div>
-            <form class="ms-auto p-2" action="#" th:action="@{/signup}" method="GET">
+            <form class="ms-auto p-2" action="#" th:action="@{/user/signup}" method="GET">
                 <button class="btn btn-outline-success form-control me-2" type="submit">Sign Up</button>
             </form>
         </div>
     </nav>
     <div class="container">
-        <form action="#" th:action="@{/login}" method="post">
+        <form action="#" th:action="@{/user/login}" method="post">
             <h2 id="form-header">Login</h2>
             <div class="form-group">
                 <label for="username">Username</label>
@@ -55,7 +55,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <div class="form-group" id="signup-link">
-                <span>Don't have an account? </span><label><a th:href="@{/signup}">Sign Up</a></label>
+                <span>Don't have an account? </span><label><a th:href="@{/user/signup}">Sign Up</a></label>
             </div>
         </form>
 

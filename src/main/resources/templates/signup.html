@@ -15,8 +15,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid d-flex">
-            <a class="navbar-brand" th:href="@{/login}">
-                <a class="navbar-brand" th:href="@{/login}">
+            <a class="navbar-brand" th:href="@{/}">
+                <a class="navbar-brand" th:href="@{/}">
                     <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png}" alt="icon" width="80" height="50">
                 </a>
             </a>
@@ -33,13 +33,13 @@
                     </li>
                 </ul>
             </div>
-            <form class="ms-auto p-2" action="#" th:action="@{/login}" method="GET">
+            <form class="ms-auto p-2" action="#" th:action="@{/user/login}" method="GET">
                 <button class="btn btn-outline-success form-control me-2" type="submit">Login</button>
             </form>
         </div>
     </nav>
     <div class="container">
-        <form action="#" th:action="@{/signup}" th:object="${signupDTO}" method="post" class="col-sm">
+        <form action="#" th:action="@{/user/signup}" th:object="${signupDTO}" method="post" class="col-sm">
             <h2 id="form-header">Sign Up</h2>
             <div class="form-group">
                 <label for="firstname">First Name</label>
@@ -65,7 +65,7 @@
             <div id="success" th:if="${signupSuccess}" th:text="${successMessage}"></div>
             <div id="failure" th:unless="${signupSuccess}" th:text="${signupError}"></div>
             <div class="form-group">
-                <span>Already have an account? </span><label><a th:href="@{/login}">Login</a></label>
+                <span>Already have an account? </span><label><a th:href="@{/user/login}">Login</a></label>
             </div>
         </form>
     </div>
