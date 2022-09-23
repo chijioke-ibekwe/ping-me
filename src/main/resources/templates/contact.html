@@ -44,7 +44,12 @@
     </nav>
     <div class="container">
         <div>
-            <div id="contact-header">Contacts <i class="fa fa-address-book icon" aria-hidden="true"></i></div>
+            <div id="contact-header" class="d-flex justify-content-between">
+                <span>Contacts <i class="fa fa-address-book icon" aria-hidden="true"></i></span>
+                <a href="#" id="add-contact-header" class="d-flex align-items-center">
+                    <span><i class="fa fa-plus" aria-hidden="true"></i>Add Contact</span>
+                </a>
+            </div>
             <form id="search-form" action="#" th:action="@{/contact/search}" method="GET">
                 <div class="form-group d-flex align-items-center" id="search-div">
                     <i class="fa fa-search icon" aria-hidden="true"></i>
@@ -58,7 +63,7 @@
                     </a>
                 </span>
                 <a th:href="@{/chat/{userContactId}(userContactId = ${contact.userContactId})}"
-                   th:text="${contact.firstName + ' ' + contact.lastName}" id="contact-anchor"></a>
+                   th:text="${contact.firstName + ' ' + contact.lastName}" id="contact-anchor" class="d-flex align-items-center"></a>
             </div>
         </div>
     </div>

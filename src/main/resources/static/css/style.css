@@ -24,11 +24,14 @@ html, body, .container{
 .lead{
     margin-top: 15px;
     margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 25px;
 }
 
 .lead a{
     margin-left: 10px;
     margin-right: 10px;
+    font-weight: bold;
 }
 
 #landing-nav{
@@ -42,6 +45,9 @@ html, body, .container{
 }
 
 #contact-anchor{
+    display: block;
+    height: 100%;
+    width: 100%;
     color: inherit;
     text-decoration: none;
     padding: 10px 10px;
@@ -115,6 +121,24 @@ html, body, .container{
     margin: 5px 0;
 }
 
+#host-nested-div > div{
+    width: auto;
+    padding: 5px 10px 7px 10px;
+    background-color: #ca0034;
+    color: white;
+    border-radius: 10px;
+    min-width: 12%;
+}
+
+#contact-nested-div > div{
+    width: auto;
+    padding: 5px 10px 7px 10px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 10px;
+    min-width: 12%;
+}
+
 .message-text{
 }
 
@@ -151,6 +175,16 @@ html, body, .container{
     font-size: 25px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+#add-contact-header{
+    color: #0d6efd;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.fa-plus{
+    padding: 0 5px;
 }
 
 #success{
