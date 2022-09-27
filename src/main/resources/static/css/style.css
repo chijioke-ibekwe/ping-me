@@ -139,6 +139,10 @@ html, body, .container{
     min-width: 12%;
 }
 
+#chat-sub-div{
+    height: 6%;
+}
+
 .message-text{
 }
 

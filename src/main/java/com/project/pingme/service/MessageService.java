@@ -10,5 +10,5 @@ public interface MessageService {
 
     List<MessageDTO> getMessages(Authentication authentication, Long userContactId);
 
-    void addMessage(Authentication authentication, ChatDTO chatDTO);
+    MessageDTO addMessage(Authentication authentication, ChatDTO chatDTO);
 }

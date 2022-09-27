@@ -1,46 +1,57 @@
 package com.project.pingme.controller;
 
 import com.project.pingme.dto.ChatDTO;
+import com.project.pingme.dto.ChatNotificationDTO;
+import com.project.pingme.dto.MessageDTO;
+import com.project.pingme.entity.User;
 import com.project.pingme.service.MessageService;
 import com.project.pingme.service.UserContactService;
+import com.project.pingme.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
-@RequestMapping("/chat")
 public class ChatController {
 
     private MessageService messageService;
     private UserContactService userContactService;
+    private SimpMessagingTemplate messagingTemplate;
+    private UserService userService;
 
-    public ChatController(MessageService messageService, UserContactService userContactService) {
+    public ChatController(MessageService messageService, UserContactService userContactService,
+                          SimpMessagingTemplate messagingTemplate, UserService userService) {
         this.messageService = messageService;
         this.userContactService = userContactService;
+        this.messagingTemplate = messagingTemplate;
+        this.userService = userService;
     }
 
-    @GetMapping("/{userContactId}")
+    @GetMapping("/chat/{userContactId}")
     @PreAuthorize("isAuthenticated()")
     public String getChat(@PathVariable Long userContactId, @ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
+        User user = userService.getUserByUsername(authentication.getName());
         model.addAttribute("messages", messageService.getMessages(authentication, userContactId));
+        model.addAttribute("userId", user.getId());
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("userContactId", userContactId);
         return "chat";
     }
 
-    @PostMapping
+    @MessageMapping("/chat")
     @PreAuthorize("isAuthenticated()")
-    public String createChat(@ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
-        messageService.addMessage(authentication, chatform);
-        chatform.setMessageText("");
-        model.addAttribute("messages", messageService.getMessages(authentication, chatform.getUserContactId()));
-        return "chat";
-    }
+    public void createChat(@RequestBody ChatDTO chatform, Authentication authentication){
+        log.debug("Adding message starting ...");
+        MessageDTO messageDTO = messageService.addMessage(authentication, chatform);
+        log.debug("Adding message completed ...");
 
-    @GetMapping("/contact")
-    @PreAuthorize("isAuthenticated()")
-    public String getContacts(Authentication authentication, Model model){
-        model.addAttribute("contacts", userContactService.getContacts(authentication));
-        return "contact";
+        messagingTemplate.convertAndSendToUser(
+                messageDTO.getRecipientId().toString(),"/queue/messages", messageDTO);
     }
 }

@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public void addMessage(Authentication authentication, ChatDTO chatDTO){
+    public MessageDTO addMessage(Authentication authentication, ChatDTO chatDTO){
         UserContact userContact = userContactRepository.findById(chatDTO.getUserContactId()).orElseThrow(() ->
                 new EntityNotFoundException("Cannot find contact"));
 
@@ -74,7 +74,20 @@ public class MessageServiceImpl implements MessageService {
         User user = userService.getUserByUsername(authentication.getName());
         message.setSender(Formatter.formatUserFullName(user));
 
-        chatMessageRepository.save(message);
+        ChatMessage savedMessage = chatMessageRepository.save(message);
+
+        MessageDTO messageDTO = new MessageDTO();
+        messageDTO.setMessageId(savedMessage.getId());
+        messageDTO.setUserContactId(savedMessage.getUserContact().getId());
+        messageDTO.setMessageText(savedMessage.getMessageText());
+        messageDTO.setMessageTime(Formatter.formatDateTime(savedMessage.getMessageTime()));
+        messageDTO.setSender(savedMessage.getSender());
+        messageDTO.setUserFullName(Formatter.formatUserFullName(user));
+        messageDTO.setRecipientId(user.getId().equals(userContact.getHost().getId()) ? userContact.getContact().getId():
+                userContact.getHost().getId());
+        messageDTO.setSenderId(user.getId());
+
+        return messageDTO;
     }
 
 }
