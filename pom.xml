@@ -107,4 +107,15 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>demo</id>
+			<properties>
+				<spring.profiles.active>
+					demo
+				</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>

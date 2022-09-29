@@ -49,9 +49,12 @@ class MessageServiceImplTest {
 
     private ChatDTO chatDTO;
 
+    private ChatMessage chatMessageOne;
+
     @BeforeEach
     void setUp(){
-        ChatMessage chatMessageOne = ChatMessage.builder()
+        chatMessageOne = ChatMessage.builder()
+                .id(2L)
                 .messageText("How are you?")
                 .messageTime(LocalDateTime.of(2022, 05, 12, 9, 15))
                 .sender("John Doe")
@@ -77,6 +80,8 @@ class MessageServiceImplTest {
                         .build())
                 .chatMessages(Arrays.asList(chatMessageOne, chatMessageTwo))
                 .build();
+
+        chatMessageOne.setUserContact(userContact);
 
         chatDTO = ChatDTO.builder()
                 .messageText("What's up?")
@@ -116,6 +121,7 @@ class MessageServiceImplTest {
 
         when(userContactRepository.findById(any())).thenReturn(Optional.of(userContact));
         when(userService.getUserByUsername(any())).thenReturn(userContact.getHost());
+        when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessageOne);
 
         messageService.addMessage(authentication, chatDTO);
 
