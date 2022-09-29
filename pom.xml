@@ -112,7 +112,7 @@
 			<id>demo</id>
 			<properties>
 				<spring.profiles.active>
-					demo
+					dev
 				</spring.profiles.active>
 			</properties>
 		</profile>
