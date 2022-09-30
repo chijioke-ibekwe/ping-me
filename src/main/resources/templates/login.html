@@ -41,6 +41,9 @@
     <div class="container">
         <form action="#" th:action="@{/user/login}" method="post">
             <h2 id="form-header">Login</h2>
+            <div th:if="${param.error}" id="login-error">Invalid username and password.</div>
+            <div th:if="${param.logout}" id="logout-success">You have been logged out.</div>
+            <div th:unless="${param.error != null OR param.logout != null}" id="error-placeholder"></div>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>

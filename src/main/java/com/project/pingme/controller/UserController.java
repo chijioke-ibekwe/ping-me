@@ -2,6 +2,7 @@ package com.project.pingme.controller;
 
 import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -35,8 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String createAccount(@ModelAttribute("signupDTO") SignupDTO signupDTO,
-                                Model model){
+    public String createAccount(@ModelAttribute("signupDTO") SignupDTO signupDTO, Model model){
 
         String signupError = null;
 
@@ -56,6 +59,7 @@ public class UserController {
         }
 
         if (signupError == null) {
+            model.addAttribute("signupError", null);
             model.addAttribute("signupSuccess", true);
             model.addAttribute("successMessage", "Sign Up Successful!");
         } else {

@@ -21,6 +21,10 @@ html, body, .container{
     margin: 10px 0;
 }
 
+#form-header{
+    margin: 10px 0;
+}
+
 .lead{
     margin-top: 15px;
     margin-bottom: 20px;
@@ -191,14 +195,18 @@ html, body, .container{
     padding: 0 5px;
 }
 
-#success{
+#success, #logout-success{
     color: green;
-    margin-top: 10px;
+    height: 24px;
 }
 
-#failure{
+#failure, #login-error{
     color: red;
-    margin-top: 10px;
+    height: 24px;
+}
+
+#error-placeholder{
+    height: 24px;
 }
 
 .bd-placeholder-img {

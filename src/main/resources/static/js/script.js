@@ -1,4 +1,5 @@
 var stompClient = null;
+var socket = null;
 
 function scrollToBottom(){
     var lastMessage = document.querySelector('.container > div:last-of-type');
@@ -6,9 +7,9 @@ function scrollToBottom(){
 }
 
 function connect() {
-    var socket = new SockJS("http://localhost:8080/ws");
+    socket = new SockJS("/ws");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, onConnected(), function(err){onError(err)});
+    stompClient.connect({}, function(frame){onConnected(frame)}, function(err){onError(err)});
 
     scrollToBottom();
     var textInput = document.getElementById('messageText');
@@ -21,10 +22,15 @@ function connect() {
     });
 };
 
-async function onConnected(){
+async function onConnected(frame){
+    console.log(frame.command);
     const currentUserId = document.getElementById("current-user-id").innerText;
     console.log("connected");
-    await sleep(3000);
+
+    while(socket.readyState === "CONNECTING"){
+        await sleep(2000);
+    }
+
     stompClient.subscribe(
       "/user/" + currentUserId + "/queue/messages", function(msg) {
         onMessageReceived(msg);
@@ -38,36 +44,36 @@ function onError(err){
 function onMessageReceived(msg){
     const message = JSON.parse(msg.body);
 
-    var parentDiv = document.getElementById('message-parent-div');
-    var nestedDiv = document.createElement('div');
-    var innerDiv = document.createElement('div');
-    var messageSenderDiv = document.createElement('div');
-    var messageTextDiv = document.createElement('div');
-    var messageTimeDiv = document.createElement('div');
-
-    nestedDiv.className = 'd-flex justify-content-start';
-    nestedDiv.id = 'contact-nested-div';
-    messageSenderDiv.className = 'sender-name';
-
-    var sender = document.createTextNode(message.sender);
-
-    messageSenderDiv.appendChild(sender);
-    messageTextDiv.className = 'message-text';
-
-    var messageText = document.createTextNode(message.messageText);
-
-    messageTextDiv.appendChild(messageText);
-    messageTimeDiv.className = 'message-time d-flex justify-content-end';
-
-    var messageTime = document.createTextNode(message.messageTime);
-
-    messageTimeDiv.appendChild(messageTime);
-
-    innerDiv.appendChild(messageSenderDiv);
-    innerDiv.appendChild(messageTextDiv);
-    innerDiv.appendChild(messageTimeDiv);
-    nestedDiv.appendChild(innerDiv);
-    parentDiv.appendChild(nestedDiv);
+//    var parentDiv = document.getElementById('message-parent-div');
+//    var nestedDiv = document.createElement('div');
+//    var innerDiv = document.createElement('div');
+//    var messageSenderDiv = document.createElement('div');
+//    var messageTextDiv = document.createElement('div');
+//    var messageTimeDiv = document.createElement('div');
+//
+//    nestedDiv.className = 'd-flex justify-content-start';
+//    nestedDiv.id = 'contact-nested-div';
+//    messageSenderDiv.className = 'sender-name';
+//
+//    var sender = document.createTextNode(message.sender);
+//
+//    messageSenderDiv.appendChild(sender);
+//    messageTextDiv.className = 'message-text';
+//
+//    var messageText = document.createTextNode(message.messageText);
+//
+//    messageTextDiv.appendChild(messageText);
+//    messageTimeDiv.className = 'message-time d-flex justify-content-end';
+//
+//    var messageTime = document.createTextNode(message.messageTime);
+//
+//    messageTimeDiv.appendChild(messageTime);
+//
+//    innerDiv.appendChild(messageSenderDiv);
+//    innerDiv.appendChild(messageTextDiv);
+//    innerDiv.appendChild(messageTimeDiv);
+//    nestedDiv.appendChild(innerDiv);
+//    parentDiv.appendChild(nestedDiv);
     window.location.reload(true);
 
     scrollToBottom();
