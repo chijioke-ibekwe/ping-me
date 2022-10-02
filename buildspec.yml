@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  pre-build:
+    commands:
+      - echo "Starting the pre-build phase"
+
+  build:
+    commands:
+      - echo "Starting the build phase"
+      - mvn clean test install
+
+  post-build:
+    commands:
+      - echo "Starting the post-build phase"
+
+artifacts:
+  files:
+    - target/ping-me-0.0.1-SNAPSHOT.jar
