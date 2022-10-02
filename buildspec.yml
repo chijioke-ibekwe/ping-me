@@ -1,6 +1,6 @@
 version: 0.2
 phases:
-  pre-build:
+  pre_build:
     commands:
       - echo "Starting the pre-build phase"
 
@@ -9,7 +9,7 @@ phases:
       - echo "Starting the build phase"
       - mvn clean test install
 
-  post-build:
+  post_build:
     commands:
       - echo "Starting the post-build phase"
 
