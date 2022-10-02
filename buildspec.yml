@@ -2,16 +2,16 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Starting the pre-build phase"
+      - echo "Starting the pre-build phase..."
 
   build:
     commands:
-      - echo "Starting the build phase"
+      - echo "Starting the build phase..."
       - mvn clean test install
 
   post_build:
     commands:
-      - echo "Starting the post-build phase"
+      - echo "Starting the post-build phase..."
 
 artifacts:
   files:
