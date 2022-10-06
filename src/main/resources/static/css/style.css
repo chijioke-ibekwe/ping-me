@@ -48,6 +48,16 @@ html, body, .container{
     width: 100%;
 }
 
+#search-user-field-div span{
+    position: absolute;
+    margin-left: 5px;
+}
+
+#search-user-field-div input{
+    height: 38px;
+    padding-left: 38px;
+}
+
 #contact-anchor{
     display: block;
     height: 100%;
@@ -63,6 +73,7 @@ html, body, .container{
     border: 1px solid #cfd1d4;
     color: black;
     border-radius: 10px;
+    margin: 5px 0;
 }
 
 #contact-div:hover {
@@ -98,6 +109,14 @@ html, body, .container{
 #search-contacts {
     width: 100%;
     padding: 10px 10px 10px 30px;
+}
+
+#search-users {
+    padding: 10px 10px 10px 30px;
+}
+
+#search-users-button, #search-users-name{
+    margin: 0 10px;
 }
 
 .sender-name{

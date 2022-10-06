@@ -1,8 +1,13 @@
 package com.project.pingme.controller;
 
+import com.project.pingme.dto.ChatDTO;
+import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.entity.User;
+import com.project.pingme.enums.UserSearchCriteria;
 import com.project.pingme.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -66,5 +72,22 @@ public class UserController {
             model.addAttribute("signupError", signupError);
         }
         return "signup";
+    }
+
+    @GetMapping("/search")
+    @PreAuthorize("isAuthenticated()")
+    public String findUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Model model){
+        return "find";
+    }
+
+    @GetMapping("/search-user")
+    @PreAuthorize("isAuthenticated()")
+    public String findUser(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Model model){
+
+        if(Arrays.stream(UserSearchCriteria.values()).anyMatch(sc -> sc.equals(searchDTO.getSearchCriteria())) &&
+                !searchDTO.getSearchInput().isEmpty()){
+            model.addAttribute("users", userService.searchUsersBy(searchDTO));
+        }
+        return "find";
     }
 }

@@ -1,7 +1,9 @@
 package com.project.pingme.service.impl;
 
+import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.entity.User;
+import com.project.pingme.enums.UserSearchCriteria;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.HashService;
 import com.project.pingme.service.UserService;
@@ -50,6 +52,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username){
         return userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<User> searchUsersBy(SearchUserDTO searchDTO){
+        if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_NAME)){
+            return userRepository.findByFirstNameOrLastNameContainingIgnoreCase(searchDTO.getSearchInput());
+        }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_PHONE_NUMBER)){
+            return userRepository.findByPhoneNumberContainingIgnoreCase(searchDTO.getSearchInput());
+        }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_USERNAME)){
+            return userRepository.findByUsernameContainingIgnoreCase(searchDTO.getSearchInput());
+        }else{
+            return new ArrayList<>();
+        }
     }
 
     @Override

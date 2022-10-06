@@ -30,7 +30,7 @@
                         <a class="nav-link" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Find People You May Know</a>
+                        <a class="nav-link" th:href="@{user/search}">Find People You May Know</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Settings</a>
@@ -45,8 +45,8 @@
     <div class="container">
         <div>
             <div id="contact-header" class="d-flex justify-content-between">
-                <span>Contacts <i class="fa fa-address-book icon" aria-hidden="true"></i></span>
-                <a href="#" id="add-contact-header" class="d-flex align-items-center">
+                <span><i class="fa fa-address-book icon" aria-hidden="true"></i> Contacts</span>
+                <a th:href="@{user/search}" id="add-contact-header" class="d-flex align-items-center">
                     <span><i class="fa fa-plus" aria-hidden="true"></i>Add Contact</span>
                 </a>
             </div>

@@ -35,6 +35,12 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "phone_number_with_country_code")
+    private String phoneNumberWithCountryCode;
+
     @OneToMany(mappedBy = "host")
     private List<UserContact> hostInstances;
 
