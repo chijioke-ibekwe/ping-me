@@ -6,35 +6,46 @@ function scrollToBottom(){
     lastMessage.scrollIntoView();
 }
 
-function connect() {
+function connect(type) {
+    console.log(type);
     socket = new SockJS("/ws");
     stompClient = Stomp.over(socket);
-    stompClient.connect({}, function(frame){onConnected(frame)}, function(err){onError(err)});
+    stompClient.connect({}, function(){onConnected(type)}, function(err){onError(err)});
 
-    scrollToBottom();
-    var textInput = document.getElementById('messageText');
+    if(type === 'chat'){
+        scrollToBottom();
+        var textInput = document.getElementById('messageText');
 
-    textInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter" && textInput === document.activeElement && textInput.value !== "") {
-            event.preventDefault();
-            document.getElementById("button-addon2").click();
-        }
-    });
+        textInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter" && textInput === document.activeElement && textInput.value !== "") {
+                event.preventDefault();
+                document.getElementById("button-addon2").click();
+            }
+        });
+    }
 };
 
-async function onConnected(frame){
-    console.log(frame.command);
+async function onConnected(type){
     const currentUserId = document.getElementById("current-user-id").innerText;
-    console.log("connected");
 
     while(socket.readyState === "CONNECTING"){
         await sleep(2000);
     }
+    console.log("connected");
+
+    if(type === 'chat'){
+        stompClient.subscribe(
+          "/user/" + currentUserId + "/queue/messages", function(msg) {
+            onMessageReceived(msg);
+        });
+        console.log('Subscribed to message queue');
+    }
 
     stompClient.subscribe(
-      "/user/" + currentUserId + "/queue/messages", function(msg) {
-        onMessageReceived(msg);
+      "/user/" + currentUserId + "/queue/connections", function(msg) {
+        console.log('Connection request received')
     });
+    console.log('Subscribed to connection queue');
 };
 
 function onError(err){
@@ -43,37 +54,6 @@ function onError(err){
 
 function onMessageReceived(msg){
     const message = JSON.parse(msg.body);
-
-//    var parentDiv = document.getElementById('message-parent-div');
-//    var nestedDiv = document.createElement('div');
-//    var innerDiv = document.createElement('div');
-//    var messageSenderDiv = document.createElement('div');
-//    var messageTextDiv = document.createElement('div');
-//    var messageTimeDiv = document.createElement('div');
-//
-//    nestedDiv.className = 'd-flex justify-content-start';
-//    nestedDiv.id = 'contact-nested-div';
-//    messageSenderDiv.className = 'sender-name';
-//
-//    var sender = document.createTextNode(message.sender);
-//
-//    messageSenderDiv.appendChild(sender);
-//    messageTextDiv.className = 'message-text';
-//
-//    var messageText = document.createTextNode(message.messageText);
-//
-//    messageTextDiv.appendChild(messageText);
-//    messageTimeDiv.className = 'message-time d-flex justify-content-end';
-//
-//    var messageTime = document.createTextNode(message.messageTime);
-//
-//    messageTimeDiv.appendChild(messageTime);
-//
-//    innerDiv.appendChild(messageSenderDiv);
-//    innerDiv.appendChild(messageTextDiv);
-//    innerDiv.appendChild(messageTimeDiv);
-//    nestedDiv.appendChild(innerDiv);
-//    parentDiv.appendChild(nestedDiv);
     window.location.reload(true);
 
     scrollToBottom();
@@ -95,6 +75,29 @@ async function sendMessage(){
     scrollToBottom();
 };
 
+async function sendConnectionRequest(userId){
+    const connectDTO = {
+        userId: userId
+    };
+
+    stompClient.send("/app/contact/connect", {}, JSON.stringify(connectDTO));
+    await sleep(100);
+    window.location.reload(true);
+};
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function modalEvent(){
+    var modal = document.getElementById('connectionModal');
+
+    modal.addEventListener('show.bs.modal', function(e) {
+        var userId = e.relatedTarget.getAttribute('data-user-id');
+        var userName = e.relatedTarget.getAttribute('data-user-name');
+
+        e.currentTarget.querySelector('#proceed-button').setAttribute('onclick', "sendConnectionRequest(" + userId + ")");
+        e.currentTarget.querySelector('.modal-body').innerText = "You are about to send a connection request to " +
+        userName + ". You'll be able to exchange messages with them only when this request is accepted.";
+    });
 }

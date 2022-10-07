@@ -8,6 +8,7 @@ import com.project.pingme.enums.UserSearchCriteria;
 import com.project.pingme.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,7 +77,11 @@ public class UserController {
 
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
-    public String findUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Model model){
+    public String findUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Authentication authentication,
+                               Model model){
+        User user = userService.getUserByUsername(authentication.getName());
+        model.addAttribute("userId", user.getId());
+        model.addAttribute("username", user.getUsername());
         return "find";
     }
 

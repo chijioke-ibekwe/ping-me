@@ -1,5 +1,6 @@
 package com.project.pingme.service.impl;
 
+import com.project.pingme.dto.ConnectDTO;
 import com.project.pingme.dto.ContactDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
@@ -36,12 +37,14 @@ public class UserContactServiceImpl implements UserContactService {
             if (uc.getHost().getId().equals(user.getId())){
                 contact = ContactDTO.builder()
                         .userContactId(uc.getId())
+                        .contactId(uc.getContact().getId())
                         .firstName(uc.getContact().getFirstName())
                         .lastName(uc.getContact().getLastName())
                         .build();
             }else{
                 contact = ContactDTO.builder()
                         .userContactId(uc.getId())
+                        .contactId(uc.getHost().getId())
                         .firstName(uc.getHost().getFirstName())
                         .lastName(uc.getHost().getLastName())
                         .build();
@@ -50,5 +53,28 @@ public class UserContactServiceImpl implements UserContactService {
         });
 
         return contacts;
+    }
+
+    @Override
+    public ContactDTO createContact(Authentication authentication, ConnectDTO connectDTO){
+        User contact = userRepository.findById(connectDTO.getUserId()).orElseThrow(() ->
+                new EntityNotFoundException("User not found"));
+        User myUser = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
+                new EntityNotFoundException("User not found"));
+
+        UserContact userContact = new UserContact();
+        userContact.setContact(contact);
+        userContact.setHost(myUser);
+        userContact.setChatMessages(new ArrayList<>());
+        userContact.setRequestStatus(RequestStatus.PENDING);
+
+        userContact = userContactRepository.saveAndFlush(userContact);
+
+        return ContactDTO.builder()
+                .userContactId(userContact.getId())
+                .contactId(userContact.getContact().getId())
+                .firstName(userContact.getContact().getFirstName())
+                .lastName(userContact.getContact().getLastName())
+                .build();
     }
 }

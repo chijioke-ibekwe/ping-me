@@ -48,14 +48,30 @@ html, body, .container{
     width: 100%;
 }
 
-#search-user-field-div span{
+#search-user-form{
+    margin: 10px 0 20px 0;
+}
+
+#search-user-form > div:first-of-type{
+    padding-left: 0px;
+}
+
+#search-user-form > div:last-of-type{
+    padding-right: 0px;
+}
+
+#search-user-form > div:first-of-type span{
     position: absolute;
     margin-left: 5px;
 }
 
-#search-user-field-div input{
+#search-user-form > div:first-of-type input{
     height: 38px;
-    padding-left: 38px;
+    padding: 10px 10px 10px 38px;
+}
+
+#search-user-button{
+    width: 100%;
 }
 
 #contact-anchor{
@@ -67,7 +83,7 @@ html, body, .container{
     padding: 10px 10px;
 }
 
-#contact-div{
+#contact-div, #user-div{
     height: 70px;
     width: 100%;
     border: 1px solid #cfd1d4;
@@ -111,11 +127,7 @@ html, body, .container{
     padding: 10px 10px 10px 30px;
 }
 
-#search-users {
-    padding: 10px 10px 10px 30px;
-}
-
-#search-users-button, #search-users-name{
+#connect-user-button, #search-user-name{
     margin: 0 10px;
 }
 
