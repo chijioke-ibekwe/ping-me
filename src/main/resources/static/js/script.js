@@ -23,6 +23,12 @@ function connect(type) {
             }
         });
     }
+
+//    var requestNavItem = document.getElementById('request-nav-item');
+//    requestNavItem.addEventListener("click", function(event) {
+//        var requestBadge = document.getElementById('request-badge');
+//        requestBadge.setAttribute('id','reveal');
+//    });
 };
 
 async function onConnected(type){
@@ -36,14 +42,14 @@ async function onConnected(type){
     if(type === 'chat'){
         stompClient.subscribe(
           "/user/" + currentUserId + "/queue/messages", function(msg) {
-            onMessageReceived(msg);
+            onMessageReceived(msg, type);
         });
         console.log('Subscribed to message queue');
     }
 
     stompClient.subscribe(
       "/user/" + currentUserId + "/queue/connections", function(msg) {
-        console.log('Connection request received')
+        onMessageReceived(msg, type);
     });
     console.log('Subscribed to connection queue');
 };
@@ -52,11 +58,22 @@ function onError(err){
     console.log(err);
 };
 
-function onMessageReceived(msg){
+function onMessageReceived(msg, type){
     const message = JSON.parse(msg.body);
     window.location.reload(true);
+    console.log(message.activity);
 
-    scrollToBottom();
+    if(type === 'chat'){
+        scrollToBottom();
+    }
+
+    if(type === 'connection' && message.activity === "RECEIVED_REQUEST"){
+        alert("You have a new connection request from " + message.senderName);
+//        var requestBadge = document.getElementById('reveal');
+//        requestBadge.setAttribute('id','request-badge');
+    }else if(type === 'connection' && message.activity === "ACCEPTED_YOUR_REQUEST"){
+        alert(message.senderName + " accepted your connection request.");
+    }
  };
 
 async function sendMessage(){
@@ -77,11 +94,31 @@ async function sendMessage(){
 
 async function sendConnectionRequest(userId){
     const connectDTO = {
-        userId: userId
+        recipientId: userId
     };
 
-    stompClient.send("/app/contact/connect", {}, JSON.stringify(connectDTO));
-    await sleep(100);
+    stompClient.send("/app/request/send", {}, JSON.stringify(connectDTO));
+    await sleep(500);
+    window.location.reload(true);
+};
+
+async function acceptConnectionRequest(requestId){
+    const requestStatusDTO = {
+        status: "ACCEPTED"
+    };
+
+    stompClient.send("/app/request/" + requestId + "/update", {},  JSON.stringify(requestStatusDTO));
+    await sleep(500);
+    window.location.reload(true);
+};
+
+async function rejectConnectionRequest(requestId){
+    const requestStatusDTO = {
+        status: "REJECTED"
+    };
+
+    stompClient.send("/app/request/" + requestId + "/update", {}, JSON.stringify(requestStatusDTO));
+    await sleep(500);
     window.location.reload(true);
 };
 
@@ -89,7 +126,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function modalEvent(){
+function findUserModalEvent(){
     var modal = document.getElementById('connectionModal');
 
     modal.addEventListener('show.bs.modal', function(e) {
@@ -99,5 +136,26 @@ function modalEvent(){
         e.currentTarget.querySelector('#proceed-button').setAttribute('onclick', "sendConnectionRequest(" + userId + ")");
         e.currentTarget.querySelector('.modal-body').innerText = "You are about to send a connection request to " +
         userName + ". You'll be able to exchange messages with them only when this request is accepted.";
+    });
+}
+
+function requestsModalEvent(){
+    var rejectRequestModal = document.getElementById('rejectRequestModal');
+    var acceptRequestModal = document.getElementById('acceptRequestModal');
+
+    rejectRequestModal.addEventListener('show.bs.modal', function(e) {
+        var requestId = e.relatedTarget.getAttribute('data-request-id');
+        var senderName = e.relatedTarget.getAttribute('data-request-sender-name');
+
+        e.currentTarget.querySelector('.proceed-button').setAttribute('onclick', "rejectConnectionRequest(" + requestId + ")");
+        e.currentTarget.querySelector('.modal-body').innerText = "Reject connection request from " + senderName + ".";
+    });
+
+    acceptRequestModal.addEventListener('show.bs.modal', function(e) {
+        var requestId = e.relatedTarget.getAttribute('data-request-id');
+        var senderName = e.relatedTarget.getAttribute('data-request-sender-name');
+
+        e.currentTarget.querySelector('.proceed-button').setAttribute('onclick', "acceptConnectionRequest(" + requestId + ")");
+        e.currentTarget.querySelector('.modal-body').innerText = "Accept connection request from " + senderName + ".";
     });
 }

@@ -2,13 +2,13 @@ package com.project.pingme.service;
 
 import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.dto.MessageDTO;
-import org.springframework.security.core.Authentication;
+import com.project.pingme.entity.User;
 
 import java.util.List;
 
 public interface MessageService {
 
-    List<MessageDTO> getMessages(Authentication authentication, Long userContactId);
+    List<MessageDTO> getMessages(User authUser, Long userContactId);
 
-    MessageDTO addMessage(Authentication authentication, ChatDTO chatDTO);
+    MessageDTO addMessage(User authUser, ChatDTO chatDTO);
 }

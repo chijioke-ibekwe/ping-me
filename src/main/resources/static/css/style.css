@@ -127,8 +127,47 @@ html, body, .container{
     padding: 10px 10px 10px 30px;
 }
 
-#connect-user-button, #search-user-name{
-    margin: 0 10px;
+#connect-user-button, #search-user-name, #reject-request-button, #accept-request-button{
+    margin: 0 15px;
+}
+
+#request-sent{
+    color: green;
+    font-style: italic;
+    margin: 0 15px;
+}
+
+#hide{
+    display: hidden;
+}
+
+.request-nav-anchor{
+    padding: 4px 10px;
+    position: relative;
+    display: inline-block;
+}
+
+#request-badge {
+    position: absolute;
+    top: -9px;
+    right: -7px;
+    padding: 1px 4px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    display: hidden;
+}
+
+#reveal {
+    position: absolute;
+    top: -9px;
+    right: -7px;
+    padding: 1px 4px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    font-size: 12px;
 }
 
 .sender-name{

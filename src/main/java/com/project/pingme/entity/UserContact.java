@@ -31,7 +31,4 @@ public class UserContact {
 
     @OneToMany(mappedBy = "userContact")
     private List<ChatMessage> chatMessages;
-
-    @Enumerated(EnumType.STRING)
-    private RequestStatus requestStatus;
 }

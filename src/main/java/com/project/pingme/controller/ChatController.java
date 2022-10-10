@@ -36,10 +36,10 @@ public class ChatController {
     @GetMapping("/chat/{userContactId}")
     @PreAuthorize("isAuthenticated()")
     public String getChat(@PathVariable Long userContactId, @ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
-        User user = userService.getUserByUsername(authentication.getName());
-        model.addAttribute("messages", messageService.getMessages(authentication, userContactId));
-        model.addAttribute("userId", user.getId());
-        model.addAttribute("username", user.getUsername());
+        User authUser = userService.getUserByUsername(authentication.getName());
+        model.addAttribute("messages", messageService.getMessages(authUser, userContactId));
+        model.addAttribute("userId", authUser.getId());
+        model.addAttribute("username", authUser.getUsername());
         model.addAttribute("userContactId", userContactId);
         return "chat";
     }
@@ -47,8 +47,9 @@ public class ChatController {
     @MessageMapping("/chat")
     @PreAuthorize("isAuthenticated()")
     public void createChat(@RequestBody ChatDTO chatform, Authentication authentication){
+        User authUser = userService.getUserByUsername(authentication.getName());
         log.debug("Adding message starting ...");
-        MessageDTO messageDTO = messageService.addMessage(authentication, chatform);
+        MessageDTO messageDTO = messageService.addMessage(authUser, chatform);
         log.debug("Adding message completed ...");
 
         messagingTemplate.convertAndSendToUser(

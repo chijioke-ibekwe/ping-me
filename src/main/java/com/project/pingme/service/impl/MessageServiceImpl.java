@@ -6,16 +6,12 @@ import com.project.pingme.dto.MessageDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
 import com.project.pingme.repository.ChatMessageRepository;
-import com.project.pingme.repository.UserContactRepository;
-import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.MessageService;
-import com.project.pingme.service.UserService;
+import com.project.pingme.service.UserContactService;
 import com.project.pingme.util.Formatter;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,21 +20,17 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     private ChatMessageRepository chatMessageRepository;
-    private UserContactRepository userContactRepository;
-    private UserService userService;
+    private UserContactService userContactService;
 
     public MessageServiceImpl(ChatMessageRepository chatMessageRepository,
-                              UserContactRepository userContactRepository,
-                              UserService userService) {
+                              UserContactService userContactService) {
         this.chatMessageRepository = chatMessageRepository;
-        this.userContactRepository = userContactRepository;
-        this.userService = userService;
+        this.userContactService = userContactService;
     }
 
     @Override
-    public List<MessageDTO> getMessages(Authentication authentication, Long userContactId) {
-        UserContact userContact = userContactRepository.findById(userContactId).orElseThrow(() ->
-                new EntityNotFoundException("Cannot find contact"));
+    public List<MessageDTO> getMessages(User authUser, Long userContactId) {
+        UserContact userContact = userContactService.getContactById(userContactId);
 
        List<ChatMessage> allChatMessages = userContact.getChatMessages();
 
@@ -51,8 +43,7 @@ public class MessageServiceImpl implements MessageService {
            message.setMessageTime(Formatter.formatDateTime(chatMessage.getMessageTime()));
            message.setSender(chatMessage.getSender());
 
-           User user = userService.getUserByUsername(authentication.getName());
-           message.setUserFullName(Formatter.formatUserFullName(user));
+           message.setUserFullName(Formatter.formatUserFullName(authUser));
 
            allMessages.add(message);
        });
@@ -62,17 +53,15 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public MessageDTO addMessage(Authentication authentication, ChatDTO chatDTO){
-        UserContact userContact = userContactRepository.findById(chatDTO.getUserContactId()).orElseThrow(() ->
-                new EntityNotFoundException("Cannot find contact"));
+    public MessageDTO addMessage(User authUser, ChatDTO chatDTO){
+        UserContact userContact = userContactService.getContactById(chatDTO.getUserContactId());
 
         ChatMessage message = new ChatMessage();
         message.setMessageText(chatDTO.getMessageText());
         message.setMessageTime(LocalDateTime.now());
         message.setUserContact(userContact);
 
-        User user = userService.getUserByUsername(authentication.getName());
-        message.setSender(Formatter.formatUserFullName(user));
+        message.setSender(Formatter.formatUserFullName(authUser));
 
         ChatMessage savedMessage = chatMessageRepository.save(message);
 
@@ -82,10 +71,10 @@ public class MessageServiceImpl implements MessageService {
         messageDTO.setMessageText(savedMessage.getMessageText());
         messageDTO.setMessageTime(Formatter.formatDateTime(savedMessage.getMessageTime()));
         messageDTO.setSender(savedMessage.getSender());
-        messageDTO.setUserFullName(Formatter.formatUserFullName(user));
-        messageDTO.setRecipientId(user.getId().equals(userContact.getHost().getId()) ? userContact.getContact().getId():
+        messageDTO.setUserFullName(Formatter.formatUserFullName(authUser));
+        messageDTO.setRecipientId(authUser.getId().equals(userContact.getHost().getId()) ? userContact.getContact().getId():
                 userContact.getHost().getId());
-        messageDTO.setSenderId(user.getId());
+        messageDTO.setSenderId(authUser.getId());
 
         return messageDTO;
     }

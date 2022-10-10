@@ -40,7 +40,7 @@ class MessageServiceImplTest {
     private UserService userService;
 
     @MockBean
-    private UserContactRepository userContactRepository;
+    private UserContactService userContactService;
 
     @MockBean
     private ChatMessageRepository chatMessageRepository;
@@ -50,6 +50,8 @@ class MessageServiceImplTest {
     private ChatDTO chatDTO;
 
     private ChatMessage chatMessageOne;
+
+    private User authUser;
 
     @BeforeEach
     void setUp(){
@@ -88,17 +90,19 @@ class MessageServiceImplTest {
                 .userContactId(1L)
                 .username("john.doe")
                 .build();
+
+        authUser.setId(1L);
+        authUser.setFirstName("Peter");
+        authUser.setLastName("Obi");
     }
     
     @Test
     @WithMockUser
     void testGetMessages(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        when(userContactRepository.findById(any())).thenReturn(Optional.of(userContact));
+        when(userContactService.getContactById(any())).thenReturn(userContact);
         when(userService.getUserByUsername(any())).thenReturn(userContact.getHost());
 
-        List<MessageDTO> result = messageService.getMessages(authentication, 1L);
+        List<MessageDTO> result = messageService.getMessages(authUser, 1L);
 
         assertThat(result.get(0).getUserContactId()).isEqualTo(1L);
         assertThat(result.get(0).getUserFullName()).isEqualTo("John Doe");
@@ -116,14 +120,13 @@ class MessageServiceImplTest {
     @Test
     @WithMockUser
     void testAddMessage(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ArgumentCaptor<ChatMessage> messageArgumentCaptor = ArgumentCaptor.forClass(ChatMessage.class);
 
-        when(userContactRepository.findById(any())).thenReturn(Optional.of(userContact));
+        when(userContactService.getContactById(any())).thenReturn(userContact);
         when(userService.getUserByUsername(any())).thenReturn(userContact.getHost());
         when(chatMessageRepository.save(any(ChatMessage.class))).thenReturn(chatMessageOne);
 
-        messageService.addMessage(authentication, chatDTO);
+        messageService.addMessage(authUser, chatDTO);
 
         verify(chatMessageRepository, times(1)).save(messageArgumentCaptor.capture());
 

@@ -33,10 +33,19 @@
                         <a class="nav-link" href="#">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{user/search}">Find People You May Know</a>
+                        <a class="nav-link active" th:href="@{/contact}">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Settings</a>
+                        <a class="nav-link" th:href="@{user/search}">Find People You May Know</a>
+                    </li>
+                    <li class="nav-item" id="request-nav-item">
+                        <a class="nav-link" th:href="@{/request}" id="request-nav-anchor">
+                            <span>Requests</span>
+                            <span id="request-badge">1</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Settings</a>
                     </li>
                 </ul>
             </div>

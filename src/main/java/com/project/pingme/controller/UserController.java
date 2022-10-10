@@ -77,7 +77,7 @@ public class UserController {
 
     @GetMapping("/search")
     @PreAuthorize("isAuthenticated()")
-    public String findUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Authentication authentication,
+    public String searchUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Authentication authentication,
                                Model model){
         User user = userService.getUserByUsername(authentication.getName());
         model.addAttribute("userId", user.getId());
@@ -87,11 +87,12 @@ public class UserController {
 
     @GetMapping("/search-user")
     @PreAuthorize("isAuthenticated()")
-    public String findUser(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Model model){
-
+    public String searchUser(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Authentication authentication,
+                             Model model){
+        User authUser = userService.getUserByUsername(authentication.getName());
         if(Arrays.stream(UserSearchCriteria.values()).anyMatch(sc -> sc.equals(searchDTO.getSearchCriteria())) &&
                 !searchDTO.getSearchInput().isEmpty()){
-            model.addAttribute("users", userService.searchUsersBy(searchDTO));
+            model.addAttribute("users", userService.searchUsersBy(authUser, searchDTO));
         }
         return "find";
     }

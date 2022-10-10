@@ -1,14 +1,9 @@
 package com.project.pingme.controller;
 
-import com.project.pingme.dto.ChatDTO;
-import com.project.pingme.dto.ConnectDTO;
-import com.project.pingme.dto.ContactDTO;
-import com.project.pingme.dto.MessageDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.service.UserContactService;
 import com.project.pingme.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -34,21 +29,10 @@ public class ContactController {
     @GetMapping("/contact")
     @PreAuthorize("isAuthenticated()")
     public String getContacts(Authentication authentication, Model model){
-        User user = userService.getUserByUsername(authentication.getName());
-        model.addAttribute("contacts", userContactService.getContacts(authentication));
-        model.addAttribute("userId", user.getId());
-        model.addAttribute("username", user.getUsername());
+        User authUser = userService.getUserByUsername(authentication.getName());
+        model.addAttribute("contacts", userContactService.getContactDTOS(authUser));
+        model.addAttribute("userId", authUser.getId());
+        model.addAttribute("username", authUser.getUsername());
         return "contact";
-    }
-
-    @MessageMapping("/contact/connect")
-    @PreAuthorize("isAuthenticated()")
-    public void requestConnection(@RequestBody ConnectDTO connectDTO, Authentication authentication){
-        log.debug("Saving connection request...");
-        ContactDTO contactDTO = userContactService.createContact(authentication, connectDTO);
-        log.debug("Connection request saved...");
-
-        messagingTemplate.convertAndSendToUser(
-                contactDTO.getContactId().toString(),"/queue/connections", contactDTO);
     }
 }

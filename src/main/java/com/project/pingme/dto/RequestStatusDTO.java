@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ConnectDTO {
+public class RequestStatusDTO {
 
-    private Long userId;
+    private String status;
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@SuperBuilder
+@Builder
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,10 +40,4 @@ public class User {
 
     @Column(name = "phone_number_with_country_code")
     private String phoneNumberWithCountryCode;
-
-    @OneToMany(mappedBy = "host")
-    private List<UserContact> hostInstances;
-
-    @OneToMany(mappedBy = "contact")
-    private List<UserContact> contactInstances;
 }

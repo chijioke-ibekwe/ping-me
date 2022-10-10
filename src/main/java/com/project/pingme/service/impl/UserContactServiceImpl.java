@@ -1,40 +1,45 @@
 package com.project.pingme.service.impl;
 
-import com.project.pingme.dto.ConnectDTO;
+import com.project.pingme.dto.ConnectRequestDTO;
 import com.project.pingme.dto.ContactDTO;
+import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
-import com.project.pingme.enums.RequestStatus;
 import com.project.pingme.repository.UserContactRepository;
-import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.UserContactService;
-import org.springframework.security.core.Authentication;
+import com.project.pingme.service.UserService;
+import com.project.pingme.util.Formatter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service
 public class UserContactServiceImpl implements UserContactService {
-    private UserRepository userRepository;
+    private UserService userService;
     private UserContactRepository userContactRepository;
 
-    public UserContactServiceImpl(UserRepository userRepository, UserContactRepository userContactRepository) {
-        this.userRepository = userRepository;
+    public UserContactServiceImpl(UserService userService, UserContactRepository userContactRepository) {
+        this.userService = userService;
         this.userContactRepository = userContactRepository;
     }
 
     @Override
-    public List<ContactDTO> getContacts(Authentication authentication){
-        User user = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
-                new EntityNotFoundException("user not found"));
+    public UserContact getContactById(Long userContactId){
+        return userContactRepository.findById(userContactId).orElseThrow(() ->
+                new EntityNotFoundException("Contact not found"));
+    }
 
-        List<UserContact> userContacts = userContactRepository.findByHostOrContactAndRequestStatus(user, user, RequestStatus.ACCEPTED);
+    @Override
+    public List<ContactDTO> getContactDTOS(User authUser){
+
+        List<UserContact> userContacts = userContactRepository.findByHostOrContact(authUser, authUser);
         List<ContactDTO> contacts = new ArrayList<>();
 
         userContacts.forEach(uc -> {
             ContactDTO contact;
-            if (uc.getHost().getId().equals(user.getId())){
+            if (uc.getHost().getId().equals(authUser.getId())){
                 contact = ContactDTO.builder()
                         .userContactId(uc.getId())
                         .contactId(uc.getContact().getId())
@@ -55,26 +60,21 @@ public class UserContactServiceImpl implements UserContactService {
         return contacts;
     }
 
+    @Transactional
     @Override
-    public ContactDTO createContact(Authentication authentication, ConnectDTO connectDTO){
-        User contact = userRepository.findById(connectDTO.getUserId()).orElseThrow(() ->
-                new EntityNotFoundException("User not found"));
-        User myUser = userRepository.findByUsername(authentication.getName()).orElseThrow(() ->
-                new EntityNotFoundException("User not found"));
+    public ConnectRequestDTO createContact(User authUser, User requestSender){
 
         UserContact userContact = new UserContact();
-        userContact.setContact(contact);
-        userContact.setHost(myUser);
-        userContact.setChatMessages(new ArrayList<>());
-        userContact.setRequestStatus(RequestStatus.PENDING);
+        userContact.setContact(authUser);
+        userContact.setHost(requestSender);
 
         userContact = userContactRepository.saveAndFlush(userContact);
 
-        return ContactDTO.builder()
-                .userContactId(userContact.getId())
-                .contactId(userContact.getContact().getId())
-                .firstName(userContact.getContact().getFirstName())
-                .lastName(userContact.getContact().getLastName())
+        return ConnectRequestDTO.builder()
+                .recipientId(userContact.getHost().getId())
+                .recipientName(Formatter.formatUserFullName(userContact.getHost()))
+                .senderName(Formatter.formatUserFullName(userContact.getContact()))
+                .activity("ACCEPTED_YOUR_REQUEST")
                 .build();
     }
 }

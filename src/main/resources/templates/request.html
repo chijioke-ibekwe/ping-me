@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
     <script th:src="@{/js/script.js}"></script>
 </head>
-<body onload="findUserModalEvent();connect('connection');">
+<body onload="requestsModalEvent();connect('connection');">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex">
         <a class="navbar-brand" th:href="@{/user/login}">
@@ -36,13 +36,10 @@
                     <a class="nav-link" th:href="@{/contact}">Contacts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{user/search}">Find People You May Know</a>
+                    <a class="nav-link" th:href="@{user/search}">Find People You May Know</a>
                 </li>
-                <li class="nav-item" id="request-nav-item">
-                    <a class="nav-link" th:href="@{/request}" id="request-nav-anchor">
-                        <span>Requests</span>
-                        <span id="request-badge">1</span>
-                    </a>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Requests</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#">Settings</a>
@@ -59,52 +56,51 @@
         <span id="current-user-id" th:text="${userId}" hidden></span>
         <span id="current-username" th:text="${username}" hidden></span>
         <div id="contact-header" class="d-flex justify-content-start">
-            <span><i class="fa fa-users icon" aria-hidden="true"></i> Find Users</span>
+            <span><i class="fa fa-address-card icon" aria-hidden="true"></i> Requests</span>
         </div>
-        <form class="row" id="search-user-form" action="#" th:action="@{/user/search-user}" th:object="${searchDTO}" method="GET">
-            <div class="col-6 d-flex align-items-center">
-                <span>
-                    <i class="fa fa-search icon" aria-hidden="true"></i>
-                </span>
-                <input type="text" name="searchInput" id="search-users" class="form-control" placeholder="Search Users" th:field="*{searchInput}" required>
-            </div>
-            <div class="col-3">
-                <select name="searchCriteria" class="form-select" th:field="*{searchCriteria}">
-                    <option selected value="">Search By...</option>
-                    <option value="BY_NAME">Name</option>
-                    <option value="BY_PHONE_NUMBER">Phone Number</option>
-                    <option value="BY_USERNAME">Username</option>
-                </select>
-            </div>
-            <div class="col-3">
-                <button class="btn btn-primary" id="search-user-button" type="submit">Search</button>
-            </div>
-        </form>
 
-        <div th:each="user : ${users}" class="d-flex align-items-center justify-content-between" id="user-div">
+        <div th:each="request : ${requests}" class="d-flex align-items-center justify-content-between" id="user-div">
             <span class="d-flex align-items-center">
                 <span id="profile-picture">
                     <a href="#" id="profile-picture-anchor">
                         <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="50" height="50">
                     </a>
                 </span>
-                <span id="search-user-name" th:text="${user.fullName}"></span>
+                <span id="search-user-name" th:text="${request.senderName}"></span>
             </span>
-            <a th:unless="${user.requestSent || user.contact}" class="btn btn-success" id="connect-user-button" th:attr="data-user-id=${user.id},data-user-name=${user.fullName}" data-bs-toggle="modal" href="#connectionModal">Connect</a>
-            <span th:if="${user.requestSent}" id="request-sent">Request Sent</span>
+            <div>
+                <a class="btn btn-primary" id="reject-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#rejectRequestModal">Reject</a>
+                <a class="btn btn-success" id="accept-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#acceptRequestModal">Accept</a>
+            </div>
         </div>
 
-        <div class="modal fade" id="connectionModal" tabindex="-1" aria-labelledby="connectionModalLabel" aria-hidden="true">
+        <div class="modal fade" id="rejectRequestModal" tabindex="-1" aria-labelledby="rejectRequestModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Send Connection Request</h5>
+                        <h5 class="modal-title">Reject Request</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a id="proceed-button" class="btn btn-success" data-bs-dismiss="modal">Proceed</a>
+                        <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="acceptRequestModal" tabindex="-1" aria-labelledby="acceptRequestModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Accept Request</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
                     </div>
                 </div>
             </div>

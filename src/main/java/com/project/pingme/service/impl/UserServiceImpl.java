@@ -2,11 +2,17 @@ package com.project.pingme.service.impl;
 
 import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
+import com.project.pingme.entity.UserContact;
+import com.project.pingme.enums.RequestStatus;
 import com.project.pingme.enums.UserSearchCriteria;
+import com.project.pingme.repository.ConnectRequestRepository;
+import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.HashService;
 import com.project.pingme.service.UserService;
+import com.project.pingme.util.Formatter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +23,15 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private ConnectRequestRepository connectRequestRepository;
+    private UserContactRepository userContactRepository;
     private HashService hashService;
 
-    public UserServiceImpl(UserRepository userRepository, HashService hashService) {
+    public UserServiceImpl(UserRepository userRepository, ConnectRequestRepository connectRequestRepository,
+                           UserContactRepository userContactRepository, HashService hashService) {
         this.userRepository = userRepository;
+        this.connectRequestRepository = connectRequestRepository;
+        this.userContactRepository = userContactRepository;
         this.hashService = hashService;
     }
 
@@ -41,8 +52,6 @@ public class UserServiceImpl implements UserService {
         user.setUsername(signupDTO.getUsername());
         user.setSalt(encodedSalt);
         user.setPassword(hashedPassword);
-        user.setHostInstances(new ArrayList<>());
-        user.setContactInstances(new ArrayList<>());
 
         User savedUser = userRepository.save(user);
 
@@ -55,16 +64,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsersBy(SearchUserDTO searchDTO){
+    public User getUserById(Long userId){
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+    }
+
+    @Override
+    public List<UserDTO> searchUsersBy(User authUser, SearchUserDTO searchDTO){
+        List<User> users = new ArrayList<>();
+        List<UserDTO> userDTOS = new ArrayList<>();
         if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_NAME)){
-            return userRepository.findByFirstNameOrLastNameContainingIgnoreCase(searchDTO.getSearchInput());
+            users = userRepository.findByFirstNameOrLastNameContainingIgnoreCase(searchDTO.getSearchInput());
         }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_PHONE_NUMBER)){
-            return userRepository.findByPhoneNumberContainingIgnoreCase(searchDTO.getSearchInput());
-        }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_USERNAME)){
-            return userRepository.findByUsernameContainingIgnoreCase(searchDTO.getSearchInput());
-        }else{
-            return new ArrayList<>();
+            users = userRepository.findByPhoneNumberContainingIgnoreCase(searchDTO.getSearchInput());
+        }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_USERNAME)) {
+            users = userRepository.findByUsernameContainingIgnoreCase(searchDTO.getSearchInput());
         }
+
+        users.forEach(user -> {
+            boolean requestSent = connectRequestRepository.existsBySenderAndRecipientAndRequestStatus(authUser, user,
+                    RequestStatus.PENDING);
+            UserContact userContact = userContactRepository.findByHostAndContact(authUser.getId(), user.getId());
+
+            UserDTO userDTO = UserDTO.builder()
+                    .id(user.getId())
+                    .fullName(Formatter.formatUserFullName(user))
+                    .username(user.getUsername())
+                    .phoneNumber(user.getPhoneNumber())
+                    .requestSent(requestSent)
+                    .contact(Objects.nonNull(userContact))
+                    .build();
+
+            if(!authUser.equals(user))
+                userDTOS.add(userDTO);
+        });
+
+        return userDTOS;
     }
 
     @Override
