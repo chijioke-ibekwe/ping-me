@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ping_me
+    url: jdbc:postgresql://ping-me-db-instance.cqqdco6tediw.us-east-2.rds.amazonaws.com:5432/ping_me
     username: postgres
-    password: postgres
+    password: pingmepostgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
@@ -16,7 +16,10 @@ logging:
   level:
     org:
       hibernate:
-        type: TRACE
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
         SQL: DEBUG
     com:
       project:
