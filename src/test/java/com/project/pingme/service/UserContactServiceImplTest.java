@@ -39,7 +39,7 @@ class UserContactServiceImplTest {
 
     private ContactDTO contactDTO;
 
-    private User authUser;
+    private User authUser = new User();
 
     @BeforeEach
     void setUp(){

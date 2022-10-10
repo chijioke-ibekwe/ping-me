@@ -2,6 +2,8 @@ package com.project.pingme.service;
 
 import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.entity.User;
+import com.project.pingme.repository.ConnectRequestRepository;
+import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +34,12 @@ class UserServiceImplTest {
 
     @MockBean
     private UserRepository userRepository;
+
+    @MockBean
+    private ConnectRequestRepository connectRequestRepository;
+
+    @MockBean
+    private UserContactRepository userContactRepository;
 
     private SignupDTO signupDTO;
 

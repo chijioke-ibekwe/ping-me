@@ -51,7 +51,7 @@ class MessageServiceImplTest {
 
     private ChatMessage chatMessageOne;
 
-    private User authUser;
+    private User authUser = new User();
 
     @BeforeEach
     void setUp(){
@@ -105,13 +105,13 @@ class MessageServiceImplTest {
         List<MessageDTO> result = messageService.getMessages(authUser, 1L);
 
         assertThat(result.get(0).getUserContactId()).isEqualTo(1L);
-        assertThat(result.get(0).getUserFullName()).isEqualTo("John Doe");
+        assertThat(result.get(0).getUserFullName()).isEqualTo("Peter Obi");
         assertThat(result.get(0).getMessageText()).isEqualTo("How are you?");
         assertThat(result.get(0).getMessageTime()).isEqualTo("12-05 09:15");
         assertThat(result.get(0).getSender()).isEqualTo("John Doe");
 
         assertThat(result.get(1).getUserContactId()).isEqualTo(1L);
-        assertThat(result.get(1).getUserFullName()).isEqualTo("John Doe");
+        assertThat(result.get(1).getUserFullName()).isEqualTo("Peter Obi");
         assertThat(result.get(1).getMessageText()).isEqualTo("I'm good");
         assertThat(result.get(1).getMessageTime()).isEqualTo("12-05 10:35");
         assertThat(result.get(1).getSender()).isEqualTo("Jane Doe");
@@ -132,6 +132,6 @@ class MessageServiceImplTest {
 
         assertThat(messageArgumentCaptor.getValue().getMessageText()).isEqualTo("What's up?");
         assertThat(messageArgumentCaptor.getValue().getUserContact()).isEqualTo(userContact);
-        assertThat(messageArgumentCaptor.getValue().getSender()).isEqualTo("John Doe");
+        assertThat(messageArgumentCaptor.getValue().getSender()).isEqualTo("Peter Obi");
     }
 }
