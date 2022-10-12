@@ -3,7 +3,10 @@ package com.project.pingme.controller;
 import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.dto.ChatNotificationDTO;
 import com.project.pingme.dto.MessageDTO;
+import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
+import com.project.pingme.entity.UserContact;
+import com.project.pingme.mapper.Mapper;
 import com.project.pingme.service.MessageService;
 import com.project.pingme.service.UserContactService;
 import com.project.pingme.service.UserService;
@@ -15,6 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -37,10 +44,17 @@ public class ChatController {
     @PreAuthorize("isAuthenticated()")
     public String getChat(@PathVariable Long userContactId, @ModelAttribute("newChat") ChatDTO chatform, Authentication authentication, Model model){
         User authUser = userService.getUserByUsername(authentication.getName());
-        model.addAttribute("messages", messageService.getMessages(authUser, userContactId));
+        List<MessageDTO> messages = messageService.getMessages(authUser, userContactId);
+        UserContact userContact = userContactService.getContactById(userContactId);
+
+        User contact = userContact.getHost().equals(authUser) ? userContact.getContact() : userContact.getHost();
+        UserDTO contactDTO = Mapper.mapToUserDTO(contact);
+
+        model.addAttribute("messages", messages);
         model.addAttribute("userId", authUser.getId());
         model.addAttribute("username", authUser.getUsername());
         model.addAttribute("userContactId", userContactId);
+        model.addAttribute("contact", contactDTO);
         return "chat";
     }
 

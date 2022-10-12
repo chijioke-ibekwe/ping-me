@@ -80,7 +80,7 @@ html, body, .container{
     width: 100%;
     color: inherit;
     text-decoration: none;
-    padding: 10px 10px;
+    padding: 10px 10px 10px 0px;
 }
 
 #contact-div, #user-div{
@@ -103,7 +103,7 @@ html, body, .container{
     width: 40px;
     border: 1px solid #cfd1d4;
     border-radius: 100%;
-    margin-left: 10px;
+    margin: 0 10px;
     background-color: white;
     overflow: hidden;
 }
@@ -127,7 +127,7 @@ html, body, .container{
     padding: 10px 10px 10px 30px;
 }
 
-#connect-user-button, #search-user-name, #reject-request-button, #accept-request-button{
+#connect-user-button, #reject-request-button, #accept-request-button{
     margin: 0 15px;
 }
 
@@ -185,6 +185,11 @@ html, body, .container{
     margin: 5px 0;
 }
 
+#nav-contact-name{
+    color: white;
+    font-weight: bold;
+}
+
 #contact-nested-div{
     text-align: left;
     display: block;
@@ -214,7 +219,7 @@ html, body, .container{
 }
 
 #chat-sub-div{
-    height: 6%;
+    height: 7.5%;
 }
 
 .message-text{

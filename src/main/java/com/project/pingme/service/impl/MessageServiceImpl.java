@@ -31,6 +31,8 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getMessages(User authUser, Long userContactId) {
         UserContact userContact = userContactService.getContactById(userContactId);
+        User host = userContact.getHost();
+        User contact = userContact.getContact();
 
        List<ChatMessage> allChatMessages = userContact.getChatMessages();
 
@@ -42,6 +44,7 @@ public class MessageServiceImpl implements MessageService {
            message.setMessageText(chatMessage.getMessageText());
            message.setMessageTime(Formatter.formatDateTime(chatMessage.getMessageTime()));
            message.setSender(chatMessage.getSender());
+           message.setSenderId(chatMessage.getSender().equals(Formatter.formatUserFullName(host)) ? host.getId() : contact.getId());
 
            message.setUserFullName(Formatter.formatUserFullName(authUser));
 

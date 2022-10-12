@@ -2,7 +2,7 @@ var stompClient = null;
 var socket = null;
 
 function scrollToBottom(){
-    var lastMessage = document.querySelector('.container > div:last-of-type');
+    var lastMessage = document.querySelector('#message-container > div:last-of-type');
     lastMessage.scrollIntoView();
 }
 
@@ -14,6 +14,7 @@ function connect(type) {
 
     if(type === 'chat'){
         scrollToBottom();
+        stickyNav();
         var textInput = document.getElementById('messageText');
 
         textInput.addEventListener("keypress", function(event) {
@@ -87,7 +88,7 @@ async function sendMessage(){
 
     text = '';
     stompClient.send("/app/chat", {}, JSON.stringify(chatDTO));
-    await sleep(100);
+    await sleep(200);
     window.location.reload(true);
     scrollToBottom();
 };
@@ -157,5 +158,19 @@ function requestsModalEvent(){
 
         e.currentTarget.querySelector('.proceed-button').setAttribute('onclick', "acceptConnectionRequest(" + requestId + ")");
         e.currentTarget.querySelector('.modal-body').innerText = "Accept connection request from " + senderName + ".";
+    });
+}
+
+function stickyNav(){
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            document.getElementById('navbar_top').classList.add('fixed-top');
+
+            navbar_height = document.querySelector('.navbar').offsetHeight;
+            document.body.style.paddingTop = navbar_height + 'px';
+        } else {
+            document.getElementById('navbar_top').classList.remove('fixed-top');
+            document.body.style.paddingTop = '0';
+        }
     });
 }

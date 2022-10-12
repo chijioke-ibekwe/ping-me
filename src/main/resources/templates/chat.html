@@ -36,7 +36,7 @@
                         <a class="nav-link" th:href="@{/contact}">Contacts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{user/search}">Find People You May Know</a>
+                        <a class="nav-link" th:href="@{/user/search}">Find People You May Know</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/request}">Requests</a>
@@ -51,21 +51,33 @@
             </form>
         </div>
     </nav>
-    <div class="container">
+
+    <nav id="navbar_top" class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <span id="profile-picture">
+                    <a href="#" id="profile-picture-anchor">
+                        <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="50" height="50">
+                    </a>
+                </span>
+                <span th:text="${contact.fullName}" id="nav-contact-name"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" id="message-container">
         <span id="current-user-id" th:text="${userId}" hidden></span>
         <span id="current-username" th:text="${username}" hidden></span>
         <span id="contact-id" th:text="${userContactId}" hidden></span>
         <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}" id="message-parent-div">
             <div th:if="${msg.sender.equals(msg.userFullName)}" class="d-flex justify-content-end" id="host-nested-div">
                 <div>
-                    <div class="sender-name d-flex justify-content-start">You</div>
                     <div th:text="${msg.messageText}" class="message-text d-flex justify-content-start"></div>
                     <div th:text="${msg.messageTime + ' '}" class="message-time d-flex justify-content-end"></div>
                 </div>
             </div>
             <div th:unless="${msg.sender.equals(msg.userFullName)}" class="d-flex justify-content-start" id="contact-nested-div">
                 <div>
-                    <div th:text="${msg.sender}" class="sender-name"></div>
                     <div th:text="${msg.messageText}" class="message-text"></div>
                     <div th:text="${msg.messageTime + ' '}" class="message-time d-flex justify-content-end"></div>
                 </div>
