@@ -14,6 +14,7 @@
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
     <script th:src="@{/js/script.js}"></script>
 </head>
 <body onload="connect('chat')">
@@ -69,7 +70,7 @@
         <span id="current-user-id" th:text="${userId}" hidden></span>
         <span id="current-username" th:text="${username}" hidden></span>
         <span id="contact-id" th:text="${userContactId}" hidden></span>
-        <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}" id="message-parent-div">
+        <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}">
             <div th:if="${msg.sender.equals(msg.userFullName)}" class="d-flex justify-content-end" id="host-nested-div">
                 <div>
                     <div th:text="${msg.messageText}" class="message-text d-flex justify-content-start"></div>
@@ -92,7 +93,7 @@
             <div class="flex-fill" id="chat-form">
                 <div class="input-group mb-3">
                     <input id="messageText" class="form-control" type="text" size="137">
-                    <button type="submit" class="btn btn-primary" id="button-addon2" onclick="sendMessage()">Send</button>
+                    <button type="submit" class="btn btn-primary" id="button-addon2" onclick="sendMessage();document.getElementById('messageText').value = ''">Send</button>
                 </div>
             </div>
             <div class="flex-fill"></div>

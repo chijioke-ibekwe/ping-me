@@ -24,12 +24,6 @@ function connect(type) {
             }
         });
     }
-
-//    var requestNavItem = document.getElementById('request-nav-item');
-//    requestNavItem.addEventListener("click", function(event) {
-//        var requestBadge = document.getElementById('request-badge');
-//        requestBadge.setAttribute('id','reveal');
-//    });
 };
 
 async function onConnected(type){
@@ -60,18 +54,39 @@ function onError(err){
 };
 
 function onMessageReceived(msg, type){
+    play();
     const message = JSON.parse(msg.body);
-    window.location.reload(true);
     console.log(message.activity);
 
     if(type === 'chat'){
+        var messageContainer = document.getElementById('message-container');
+        var chatSubDiv = document.getElementById('chat-sub-div');
+        var div2 = document.createElement('div');
+        var div3 = document.createElement('div');
+        var div4 = document.createElement('div');
+        var div5 = document.createElement('div');
+
+        div2.setAttribute('id', 'contact-nested-div');
+        div2.classList.add('d-flex', 'justify-content-start');
+        div4.classList.add('message-text');
+        div4.innerText = message.messageText;
+        div5.classList.add('message-time', 'd-flex', 'justify-content-end');
+        div5.innerText = message.messageTime;
+
+        var fragment = document.createDocumentFragment();
+        var divs = fragment
+          .appendChild(document.createElement('div'))
+          .appendChild(div2)
+          .appendChild(div3)
+          .appendChild(div4);
+
+        div3.appendChild(div5);
+        messageContainer.insertBefore(fragment, chatSubDiv);
         scrollToBottom();
     }
 
     if(type === 'connection' && message.activity === "RECEIVED_REQUEST"){
         alert("You have a new connection request from " + message.senderName);
-//        var requestBadge = document.getElementById('reveal');
-//        requestBadge.setAttribute('id','request-badge');
     }else if(type === 'connection' && message.activity === "ACCEPTED_YOUR_REQUEST"){
         alert(message.senderName + " accepted your connection request.");
     }
@@ -86,11 +101,33 @@ async function sendMessage(){
         username: document.getElementById('current-username').innerText
     };
 
-    text = '';
-    stompClient.send("/app/chat", {}, JSON.stringify(chatDTO));
-    await sleep(200);
-    window.location.reload(true);
+    var time = moment().format('DD-MM HH:mm')
+    var messageContainer = document.getElementById('message-container');
+    var chatSubDiv = document.getElementById('chat-sub-div');
+    var div2 = document.createElement('div');
+    var div3 = document.createElement('div');
+    var div4 = document.createElement('div');
+    var div5 = document.createElement('div');
+
+    div2.setAttribute('id', 'host-nested-div');
+    div2.classList.add('d-flex', 'justify-content-end');
+    div4.classList.add('message-text', 'd-flex', 'justify-content-start');
+    div4.innerText = text;
+    div5.classList.add('message-time', 'd-flex', 'justify-content-end');
+    div5.innerText = time;
+
+    var fragment = document.createDocumentFragment();
+    var divs = fragment
+      .appendChild(document.createElement('div'))
+      .appendChild(div2)
+      .appendChild(div3)
+      .appendChild(div4);
+
+    div3.appendChild(div5)
+    messageContainer.insertBefore(fragment, chatSubDiv)
     scrollToBottom();
+
+    stompClient.send("/app/chat", {}, JSON.stringify(chatDTO));
 };
 
 async function sendConnectionRequest(userId){
@@ -173,4 +210,9 @@ function stickyNav(){
             document.body.style.paddingTop = '0';
         }
     });
+}
+
+function play() {
+    var audio = new Audio('https://drive.google.com/uc?id=12eRadqgLXMkp2ITU7SzdpzoaKV6HdAI3');
+    audio.play();
 }
