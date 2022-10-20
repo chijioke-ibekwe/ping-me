@@ -17,6 +17,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -66,6 +67,18 @@ class UserContactServiceImplTest {
                 .build();
 
         authUser.setId(2L);
+    }
+
+    @Test
+    @WithMockUser
+    void testGetContactById(){
+        when(userContactRepository.findById(anyLong())).thenReturn(Optional.ofNullable(userContact));
+
+        UserContact result = userContactService.getContactById(1L);
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getHost().getFirstName()).isEqualTo("John");
+        assertThat(result.getContact().getFirstName()).isEqualTo("Jane");
     }
 
     @Test
