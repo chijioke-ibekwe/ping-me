@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ConnectRequestServiceImpl implements ConnectRequestService {
@@ -40,15 +41,10 @@ public class ConnectRequestServiceImpl implements ConnectRequestService {
 
     @Override
     public List<ConnectRequestDTO> getReceivedConnectRequests(User authUser){
-        List<ConnectRequestDTO> connectRequestDTOS = new ArrayList<>();
         List<ConnectRequest> requests = connectRequestRepository.findByRecipientAndRequestStatus(authUser, RequestStatus.PENDING);
 
-        requests.forEach(r -> {
-            ConnectRequestDTO connectRequestDTO = Mapper.mapToConnectRequestDTO(r);
-            connectRequestDTOS.add(connectRequestDTO);
-        });
-
-        return connectRequestDTOS;
+        return requests.stream().map(Mapper::mapToConnectRequestDTO)
+                .collect(Collectors.toList());
     }
 
     @Transactional
