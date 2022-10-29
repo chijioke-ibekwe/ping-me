@@ -9,6 +9,7 @@ import com.project.pingme.service.impl.ConnectRequestServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,25 +40,46 @@ class ConnectRequestServiceImplTest {
 
     private List<ConnectRequest> connectRequests = new ArrayList<>();
 
+    private User recipient;
+
+    private User sender;
+
+    private User authUser;
+
+    private ConnectRequestDTO connectRequestDTO;
+
     @BeforeEach
     void setUp(){
+        recipient = User.builder()
+                .id(2L)
+                .firstName("John")
+                .lastName("Doe")
+                .build();
+
+        sender = User.builder()
+                .id(3L)
+                .firstName("Jane")
+                .lastName("Doe")
+                .build();
+
+        authUser = User.builder()
+                .id(7L)
+                .firstName("James")
+                .lastName("Bond")
+                .build();
 
         ConnectRequest connectRequest = ConnectRequest.builder()
                 .id(1L)
-                .recipient(User.builder()
-                        .id(2L)
-                        .firstName("John")
-                        .lastName("Doe")
-                        .build())
-                .sender(User.builder()
-                        .id(3L)
-                        .firstName("Jane")
-                        .lastName("Doe")
-                        .build())
+                .recipient(recipient)
+                .sender(sender)
                 .requestStatus(RequestStatus.PENDING)
                 .build();
 
         connectRequests.add(connectRequest);
+
+        connectRequestDTO = ConnectRequestDTO.builder()
+                .recipientId(1L)
+                .build();
     }
 
     @Test
@@ -72,5 +94,23 @@ class ConnectRequestServiceImplTest {
         assertThat(result.get(0).getRecipientName()).isEqualTo("John Doe");
         assertThat(result.get(0).getSenderName()).isEqualTo("Jane Doe");
         assertThat(result.get(0).getRecipientId()).isEqualTo(2L);
+    }
+
+    @Test
+    void testCreateConnectRequests(){
+
+        ArgumentCaptor<ConnectRequest> argumentCaptor = ArgumentCaptor.forClass(ConnectRequest.class);
+
+        when(userService.getUserById(any())).thenReturn(recipient);
+        when(connectRequestRepository.saveAndFlush(argumentCaptor.capture())).thenReturn(connectRequests.get(0));
+
+        ConnectRequestDTO result = connectRequestService.createConnectRequest(authUser, connectRequestDTO);
+
+        assertThat(argumentCaptor.getValue().getSender()).isEqualTo(authUser);
+        assertThat(argumentCaptor.getValue().getRecipient()).isEqualTo(recipient);
+        assertThat(argumentCaptor.getValue().getRequestStatus()).isEqualTo(RequestStatus.PENDING);
+        assertThat(result.getRecipientName()).isEqualTo("John Doe");
+        assertThat(result.getSenderName()).isEqualTo("Jane Doe");
+        assertThat(result.getActivity()).isEqualTo("RECEIVED_REQUEST");
     }
 }
