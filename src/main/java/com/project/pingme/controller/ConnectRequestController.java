@@ -64,7 +64,7 @@ public class ConnectRequestController {
                                     Authentication authentication){
         User authUser = userService.getUserByUsername(authentication.getName());
         log.debug("Saving connection request...");
-        ConnectRequestDTO response = connectRequestService.updateConnectRequest(authUser, requestId, RequestStatus.valueOf(requestStatus.getStatus()));
+        ConnectRequestDTO response = connectRequestService.updateConnectRequestStatus(authUser, requestId, RequestStatus.valueOf(requestStatus.getStatus()));
         log.debug("Connection request saved...");
 
         if (Objects.nonNull(response))

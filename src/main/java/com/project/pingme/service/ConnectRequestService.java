@@ -16,5 +16,5 @@ public interface ConnectRequestService {
 
     ConnectRequestDTO createConnectRequest(User authUser, ConnectRequestDTO connectRequestDTO);
 
-    ConnectRequestDTO updateConnectRequest(User authUser, Long connectRequestId, RequestStatus requestStatus);
+    ConnectRequestDTO updateConnectRequestStatus(User authUser, Long connectRequestId, RequestStatus requestStatus);
 }

@@ -68,7 +68,7 @@ public class ConnectRequestServiceImpl implements ConnectRequestService {
 
     @Transactional
     @Override
-    public ConnectRequestDTO updateConnectRequest(User authUser, Long connectRequestId, RequestStatus requestStatus){
+    public ConnectRequestDTO updateConnectRequestStatus(User authUser, Long connectRequestId, RequestStatus requestStatus){
         ConnectRequest connectRequest = connectRequestRepository.findByRecipientAndId(authUser, connectRequestId)
                 .orElseThrow(() -> new EntityNotFoundException("Request not found"));
 

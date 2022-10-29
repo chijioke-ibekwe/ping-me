@@ -17,10 +17,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ConnectRequestServiceImpl.class)
@@ -112,5 +113,24 @@ class ConnectRequestServiceImplTest {
         assertThat(result.getRecipientName()).isEqualTo("John Doe");
         assertThat(result.getSenderName()).isEqualTo("Jane Doe");
         assertThat(result.getActivity()).isEqualTo("RECEIVED_REQUEST");
+    }
+
+    @Test
+    void testUpdateConnectRequestStatus_whenStatusUpdateIsAccepted(){
+
+        ArgumentCaptor<ConnectRequest> argumentCaptor = ArgumentCaptor.forClass(ConnectRequest.class);
+
+        when(connectRequestRepository.findByRecipientAndId(any(User.class), any()))
+                .thenReturn(Optional.ofNullable(connectRequests.get(0)));
+        when(userContactService.createContact(any(User.class), any(User.class))).thenReturn(connectRequestDTO);
+        when(connectRequestRepository.save(argumentCaptor.capture())).thenReturn(null);
+
+        ConnectRequestDTO result = connectRequestService.updateConnectRequestStatus(authUser, 1L,
+                RequestStatus.ACCEPTED);
+
+        verify(userContactService, times(1)).createContact(any(User.class), any(User.class));
+
+        assertThat(argumentCaptor.getValue().getRequestStatus()).isEqualTo(RequestStatus.ACCEPTED);
+        assertThat(result).isEqualTo(connectRequestDTO);
     }
 }
