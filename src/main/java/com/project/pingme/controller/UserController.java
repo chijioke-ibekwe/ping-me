@@ -1,6 +1,5 @@
 package com.project.pingme.controller;
 
-import com.project.pingme.dto.ChatDTO;
 import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.entity.User;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Controller

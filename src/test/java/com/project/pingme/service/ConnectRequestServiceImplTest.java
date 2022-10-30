@@ -133,4 +133,22 @@ class ConnectRequestServiceImplTest {
         assertThat(argumentCaptor.getValue().getRequestStatus()).isEqualTo(RequestStatus.ACCEPTED);
         assertThat(result).isEqualTo(connectRequestDTO);
     }
+
+    @Test
+    void testUpdateConnectRequestStatus_whenStatusUpdateIsRejected(){
+
+        ArgumentCaptor<ConnectRequest> argumentCaptor = ArgumentCaptor.forClass(ConnectRequest.class);
+
+        when(connectRequestRepository.findByRecipientAndId(any(User.class), any()))
+                .thenReturn(Optional.ofNullable(connectRequests.get(0)));
+        when(connectRequestRepository.save(argumentCaptor.capture())).thenReturn(null);
+
+        ConnectRequestDTO result = connectRequestService.updateConnectRequestStatus(authUser, 1L,
+                RequestStatus.REJECTED);
+
+        verifyNoInteractions(userContactService);
+
+        assertThat(argumentCaptor.getValue().getRequestStatus()).isEqualTo(RequestStatus.REJECTED);
+        assertThat(result).isEqualTo(null);
+    }
 }
