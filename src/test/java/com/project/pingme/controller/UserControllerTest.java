@@ -58,8 +58,24 @@ class UserControllerTest {
                         .param("password", "password")
                         .param("confirmPassword","password")
                         .with(csrf()))
-                        .andExpect(status().isOk())
-                        .andExpect(model().attribute("signupSuccess", true))
-                        .andExpect(model().attribute("successMessage", "Sign Up Successful!"));
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("signupSuccess", true))
+                .andExpect(model().attribute("successMessage", "Sign Up Successful!"));
+    }
+
+    @Test
+    void testUserSignUp_whenUserExists() throws Exception {
+
+        when(userService.isAvailable(any())).thenReturn(true);
+
+        this.mockMvc.perform(post("/user/signup")
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("username", "john.doe")
+                        .param("password", "password")
+                        .param("confirmPassword","password")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("signupError", "Username already exists"));
     }
 }
