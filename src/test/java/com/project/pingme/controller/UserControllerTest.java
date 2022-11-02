@@ -78,4 +78,20 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("signupError", "Username already exists"));
     }
+
+    @Test
+    void testUserSignUp_whenPasswordsDoNotMatch() throws Exception {
+
+        when(userService.isAvailable(any())).thenReturn(true);
+
+        this.mockMvc.perform(post("/user/signup")
+                        .param("firstName", "John")
+                        .param("lastName", "Doe")
+                        .param("username", "john.doe")
+                        .param("password", "password")
+                        .param("confirmPassword","passport")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("signupError", "Password fields have to match"));
+    }
 }
