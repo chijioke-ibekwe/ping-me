@@ -1,7 +1,10 @@
 package com.project.pingme.controller;
 
 import com.project.pingme.config.SecurityConfig;
+import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.dto.UserDTO;
+import com.project.pingme.entity.User;
 import com.project.pingme.service.AuthenticationService;
 import com.project.pingme.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -9,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -94,4 +100,35 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("signupError", "Password fields have to match"));
     }
+
+    @Test
+    void testUserSearchPage_redirectAnonymousUserToLogin() throws Exception {
+
+        this.mockMvc.perform(post("/user/search")
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @WithMockUser
+    void testUserSearch() throws Exception {
+        UserDTO user = UserDTO.builder()
+                .id(3L)
+                .fullName("Jane Doe")
+                .username("jane.doe")
+                .phoneNumber("+2348000002222")
+                .build();
+
+        when(userService.getUserByUsername(any())).thenReturn(User.builder().id(1L).username("jon.doe").build());
+        when(userService.searchUsersBy(any(User.class), any(SearchUserDTO.class))).thenReturn(Collections.singletonList(user));
+
+        this.mockMvc.perform(get("/user/search-user")
+                        .param("searchInput", "John")
+                        .param("searchCriteria", "BY_NAME")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("find"))
+                .andExpect(model().attribute("users", Collections.singletonList(user)));
+    }
+
 }
