@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -129,6 +129,22 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("find"))
                 .andExpect(model().attribute("users", Collections.singletonList(user)));
+    }
+
+
+    @Test
+    @WithMockUser
+    void testUserSearch_whenNoSearchInputIsProvided() throws Exception {
+
+        when(userService.getUserByUsername(any())).thenReturn(User.builder().id(1L).username("jon.doe").build());
+        verify(userService, times(0)).searchUsersBy(any(User.class), any(SearchUserDTO.class));
+
+        this.mockMvc.perform(get("/user/search-user")
+                        .param("searchInput", "")
+                        .param("searchCriteria", "BY_NAME")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("find"));
     }
 
 }
