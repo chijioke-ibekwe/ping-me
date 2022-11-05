@@ -1,5 +1,6 @@
 # <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png" alt="icon" width="90" height="60"> Ping Me!
-Ping Me! is a chat application where users could find and connect with people they might know and exchange messages and media. It is a Spring Boot application built on the Spring MVC module.
+Ping Me! is a chat application where users could find and connect with people they might know and exchange messages and media. It is a Spring Boot application.
+
 #### Screenshots:
 <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/screenshots/contacts_page.png" alt="contacts_page" width="700" height="450">
 <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/screenshots/chat_page.png" alt="chat_page" width="700" height="450">
@@ -12,7 +13,7 @@ For building and running the application you need:
 1. JDK 1.8
 2. Maven 3
 
-### Dependencies
+### Key Dependencies
 For backend
 1. Spring Web
 2. Spring Data JPA
@@ -46,6 +47,6 @@ mvn spring-boot:run -Drun.arguments="spring.profiles.active=test"
 ```
 
 ## Author
-- Chijioke Ibekwe
+- Chijioke Ibekwe (https://github.com/chijioke-ibekwe)
 
 
