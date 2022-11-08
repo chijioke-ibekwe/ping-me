@@ -1,5 +1,5 @@
 # <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png" alt="icon" width="90" height="60"> Ping Me!
-Ping Me! is a chat application where users could find and connect with people they might know and exchange messages and media. It is a Spring Boot application and features real-time messaging and notifications, connection requesting etc.
+Ping Me! is a chat application where users could find and connect with people they might know and exchange messages and media. It is a Spring Boot application and features user authentication, real-time messaging/notifications, and user connection preferences.
 
 #### Screenshots:
 <img src="https://ping-me-resources.s3.us-east-2.amazonaws.com/screenshots/contacts_page.png" alt="contacts_page" width="700" height="450">
