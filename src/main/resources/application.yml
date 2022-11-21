@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://ping-me-db-instance.cqqdco6tediw.us-east-2.rds.amazonaws.com:5432/ping_me
+    url: jdbc:postgresql://localhost:5432/ping_me
     username: postgres
-    password: pingmepostgres
+    password: postgres
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
