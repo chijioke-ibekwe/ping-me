@@ -1,5 +1,6 @@
 package com.project.pingme;
 
+import com.project.pingme.dto.ContactDTO;
 import com.project.pingme.dto.MessageDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
@@ -59,5 +60,24 @@ public class TestUtil {
                 .build();
 
         return Arrays.asList(messageOne, messageTwo);
+    }
+
+    public List<ContactDTO> getContactDTOS(){
+
+        ContactDTO contactOne = ContactDTO.builder()
+                .userContactId(1L)
+                .contactId(4L)
+                .firstName("Obinna")
+                .lastName("Agu")
+                .build();
+
+        ContactDTO contactTwo = ContactDTO.builder()
+                .userContactId(4L)
+                .contactId(6L)
+                .firstName("Chidera")
+                .lastName("Eze")
+                .build();
+
+        return Arrays.asList(contactOne, contactTwo);
     }
 }

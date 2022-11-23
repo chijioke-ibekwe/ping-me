@@ -17,13 +17,10 @@ public class ContactController {
 
     private UserContactService userContactService;
     private UserService userService;
-    private SimpMessagingTemplate messagingTemplate;
 
-    public ContactController(UserContactService userContactService, UserService userService,
-                             SimpMessagingTemplate messagingTemplate) {
+    public ContactController(UserContactService userContactService, UserService userService) {
         this.userContactService = userContactService;
         this.userService = userService;
-        this.messagingTemplate = messagingTemplate;
     }
 
     @GetMapping("/contact")
