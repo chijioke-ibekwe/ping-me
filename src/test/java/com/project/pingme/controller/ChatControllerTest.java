@@ -1,12 +1,9 @@
 package com.project.pingme.controller;
 
-import com.project.pingme.TestUtil;
+import com.project.pingme.util.TestUtil;
 import com.project.pingme.config.SecurityConfig;
-import com.project.pingme.dto.SearchUserDTO;
-import com.project.pingme.dto.SignupDTO;
 import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
-import com.project.pingme.entity.UserContact;
 import com.project.pingme.service.AuthenticationService;
 import com.project.pingme.service.MessageService;
 import com.project.pingme.service.UserContactService;
@@ -20,13 +17,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collections;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Import(SecurityConfig.class)

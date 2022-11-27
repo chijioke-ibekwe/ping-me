@@ -1,5 +1,6 @@
-package com.project.pingme;
+package com.project.pingme.util;
 
+import com.project.pingme.dto.ConnectRequestDTO;
 import com.project.pingme.dto.ContactDTO;
 import com.project.pingme.dto.MessageDTO;
 import com.project.pingme.entity.User;
@@ -7,6 +8,7 @@ import com.project.pingme.entity.UserContact;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class TestUtil {
@@ -79,5 +81,17 @@ public class TestUtil {
                 .build();
 
         return Arrays.asList(contactOne, contactTwo);
+    }
+
+    public List<ConnectRequestDTO> getConnectRequestDTOS(){
+
+        ConnectRequestDTO requestOne = ConnectRequestDTO.builder()
+                .requestId(1L)
+                .recipientId(2L)
+                .recipientName("John Doe")
+                .senderName("Jane Doe")
+                .build();
+
+        return Collections.singletonList(requestOne);
     }
 }
