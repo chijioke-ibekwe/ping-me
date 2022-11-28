@@ -19,8 +19,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Import(SecurityConfig.class)
-@WebMvcTest(ChatController.class)
-class ConnectionRequestControllerTest {
+@WebMvcTest(ConnectRequestController.class)
+class ConnectRequestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
