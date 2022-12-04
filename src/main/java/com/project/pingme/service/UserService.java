@@ -2,6 +2,7 @@ package com.project.pingme.service;
 
 import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.dto.UpdateUserDTO;
 import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
 
@@ -18,4 +19,6 @@ public interface UserService {
     List<UserDTO> searchUsersBy(User authUser, SearchUserDTO searchDTO);
 
     boolean isAvailable(String username);
+
+    User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO);
 }
