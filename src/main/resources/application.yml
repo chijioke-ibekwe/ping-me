@@ -12,6 +12,10 @@ spring:
   liquibase:
     change-log: 'classpath:/db/changelog-master.yaml'
 
+amazon-properties:
+  bucket-name:
+    profile-picture: ping-me-profile-pictures
+
 logging:
   level:
     org:

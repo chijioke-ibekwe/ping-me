@@ -1,7 +1,10 @@
 package com.project.pingme.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
+import com.project.pingme.component.Base64FileParser;
+import com.project.pingme.config.properties.AmazonS3Properties;
 import com.project.pingme.service.AmazonService;
-import org.apache.tomcat.util.http.fileupload.impl.IOFileUploadException;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -55,16 +58,16 @@ public class AmazonServiceImpl implements AmazonService {
     }
 
 
-    public String uploadDoc(String path, String data, DocumentType documentType) throws Exception {
+    public String uploadPic(String path, String data) throws Exception {
         base64FileParser.parse(data);
-        if (!VALID_DOCUMENT_TYPES.contains(base64FileParser.getExtension())) {
-            throw new IOFileUploadException(String.format("Invalid document format %s. " +
-                    "Allowed formats %s", base64FileParser.getExtension(), VALID_DOCUMENT_TYPES));
+        if (!VALID_IMAGE_TYPES.contains(base64FileParser.getExtension())) {
+            throw new Exception(String.format("Invalid image format %s. " +
+                    "Allowed formats %s", base64FileParser.getExtension(), VALID_IMAGE_TYPES));
         }
         AccessControlList acl = new AccessControlList();
         acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 
-        return this.upload(null, base64FileParser, amazonS3Properties.getBucketName(), acl);
+        return this.upload(null, base64FileParser, amazonS3Properties.getBucketName().getProfilePicture(), acl);
     }
 }
 
