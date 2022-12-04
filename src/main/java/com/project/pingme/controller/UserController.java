@@ -2,6 +2,7 @@ package com.project.pingme.controller;
 
 import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.dto.UpdateUserDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.enums.UserSearchCriteria;
 import com.project.pingme.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -93,5 +95,17 @@ public class UserController {
             model.addAttribute("users", userService.searchUsersBy(authUser, searchDTO));
         }
         return "find";
+    }
+
+    @PostMapping("/profile")
+    @PreAuthorize("isAuthenticated()")
+    public String updateUserProfile(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication){
+        User authUser = userService.getUserByUsername(authentication.getName());
+
+        String updateError = null;
+        if(Objects.nonNull(updateUserDTO.getUsername()) && userService.isAvailable(updateUserDTO.getUsername())){
+            updateError = "Username already exists";
+        }
+        return "profile";
     }
 }
