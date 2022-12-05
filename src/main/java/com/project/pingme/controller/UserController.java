@@ -109,7 +109,7 @@ public class UserController {
         }
 
         if (Objects.isNull(updateError)){
-
+            userService.updateUserProfile(authUser, updateUserDTO);
         }
         return "profile";
     }

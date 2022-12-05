@@ -2,6 +2,7 @@ package com.project.pingme.service.impl;
 
 import com.project.pingme.dto.SearchUserDTO;
 import com.project.pingme.dto.SignupDTO;
+import com.project.pingme.dto.UpdateUserDTO;
 import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.User;
 import com.project.pingme.entity.UserContact;
@@ -13,6 +14,10 @@ import com.project.pingme.repository.UserRepository;
 import com.project.pingme.service.HashService;
 import com.project.pingme.service.UserService;
 import com.project.pingme.util.Formatter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MatchingStrategy;
+import org.springframework.beans.BeanUtils;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,5 +110,12 @@ public class UserServiceImpl implements UserService {
     public boolean isAvailable(String username){
 
         return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(Matc);
     }
 }
