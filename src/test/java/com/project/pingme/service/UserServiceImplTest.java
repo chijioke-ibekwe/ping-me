@@ -41,6 +41,9 @@ class UserServiceImplTest {
     @MockBean
     private UserContactRepository userContactRepository;
 
+    @MockBean
+    private AmazonService amazonService;
+
     private SignupDTO signupDTO;
 
     private User user;
