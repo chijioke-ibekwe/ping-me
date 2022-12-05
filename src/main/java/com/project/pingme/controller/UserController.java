@@ -100,7 +100,7 @@ public class UserController {
     @PostMapping("/profile")
     @PreAuthorize("isAuthenticated()")
     public String updateUserProfile(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication,
-                                    Model model){
+                                    Model model) throws Exception {
         User authUser = userService.getUserByUsername(authentication.getName());
 
         String updateError = null;
@@ -111,6 +111,7 @@ public class UserController {
         if (Objects.isNull(updateError)){
             userService.updateUserProfile(authUser, updateUserDTO);
         }
+
         return "profile";
     }
 }

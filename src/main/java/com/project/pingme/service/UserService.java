@@ -20,5 +20,5 @@ public interface UserService {
 
     boolean isAvailable(String username);
 
-    User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO);
+    User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO) throws Exception;
 }

@@ -11,13 +11,11 @@ import com.project.pingme.enums.UserSearchCriteria;
 import com.project.pingme.repository.ConnectRequestRepository;
 import com.project.pingme.repository.UserContactRepository;
 import com.project.pingme.repository.UserRepository;
+import com.project.pingme.service.AmazonService;
 import com.project.pingme.service.HashService;
 import com.project.pingme.service.UserService;
 import com.project.pingme.util.Formatter;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.spi.MatchingStrategy;
-import org.springframework.beans.BeanUtils;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,19 +23,24 @@ import javax.persistence.EntityNotFoundException;
 import java.security.SecureRandom;
 import java.util.*;
 
+import static org.modelmapper.convention.MatchingStrategies.STRICT;
+
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private ConnectRequestRepository connectRequestRepository;
-    private UserContactRepository userContactRepository;
-    private HashService hashService;
+    private final UserRepository userRepository;
+    private final ConnectRequestRepository connectRequestRepository;
+    private final UserContactRepository userContactRepository;
+    private final HashService hashService;
+    private final AmazonService amazonService;
 
     public UserServiceImpl(UserRepository userRepository, ConnectRequestRepository connectRequestRepository,
-                           UserContactRepository userContactRepository, HashService hashService) {
+                           UserContactRepository userContactRepository, HashService hashService,
+                           AmazonService amazonService) {
         this.userRepository = userRepository;
         this.connectRequestRepository = connectRequestRepository;
         this.userContactRepository = userContactRepository;
         this.hashService = hashService;
+        this.amazonService = amazonService;
     }
 
     @Transactional
@@ -114,8 +117,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO){
+    public User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO) throws Exception {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(Matc);
+        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(STRICT);
+
+        modelMapper.map(updateUserDTO, authUser);
+
+        String url = amazonService.uploadPic(null, updateUserDTO.getPictureUrl());
+
+        authUser.setDisplayPictureUrl(url);
+
+        return userRepository.save(authUser);
     }
 }

@@ -40,4 +40,7 @@ public class User {
 
     @Column(name = "phone_number_with_country_code")
     private String phoneNumberWithCountryCode;
+
+    @Column(name = "display_picture_url")
+    private String displayPictureUrl;
 }

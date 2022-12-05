@@ -14,3 +14,6 @@ databaseChangeLog:
   - include:
       file: changelog/create-connect-requests-table.sql
       relativeToChangelogFile: true
+  - include:
+      file: changelog/add-display-picture-url-column-to-user.sql
+      relativeToChangelogFile: true

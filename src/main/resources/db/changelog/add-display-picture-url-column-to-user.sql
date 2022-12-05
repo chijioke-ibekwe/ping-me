@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN display_picture_url VARCHAR(255);

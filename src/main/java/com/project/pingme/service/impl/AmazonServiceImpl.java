@@ -67,7 +67,7 @@ public class AmazonServiceImpl implements AmazonService {
         AccessControlList acl = new AccessControlList();
         acl.grantPermission(GroupGrantee.AllUsers, Permission.Read);
 
-        return this.upload(null, base64FileParser, amazonS3Properties.getBucketName().getProfilePicture(), acl);
+        return this.upload(path, base64FileParser, amazonS3Properties.getBucketName().getProfilePicture(), acl);
     }
 }
 
