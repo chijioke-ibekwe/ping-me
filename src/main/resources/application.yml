@@ -19,8 +19,8 @@ amazon-properties:
 cloud:
   aws:
     credentials:
-      access-key: KEY
-      secret-key: SECRET
+      access-key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      secret-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 logging:
   level:
