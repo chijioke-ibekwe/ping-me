@@ -21,6 +21,7 @@ cloud:
     credentials:
       access-key: AKIA4U76XNVHVK4EFREG
       secret-key: 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
+      default-region: us-east-2
 
 logging:
   level:
