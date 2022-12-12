@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" href="@{/user/profile}">Profile</a>
+                    <a class="nav-link active" th:href="@{/user/profile}">Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/contact}">Contacts</a>
@@ -56,8 +56,29 @@
         <span id="current-user-id" th:text="${userId}" hidden></span>
         <span id="current-username" th:text="${username}" hidden></span>
         <div id="contact-header" class="d-flex justify-content-start">
-            <span><i class="fa fa-address-card icon" aria-hidden="true"></i> Profile</span>
+            <span><i class="fa fa-use icon" aria-hidden="true"></i> Profile</span>
         </div>
+        <form class="row g-3">
+            <div class="col-md-6">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="email" class="form-control" id="firstName">
+            </div>
+            <div class="col-md-6">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="password" class="form-control" id="lastName">
+            </div>
+            <div class="col-md-6">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="">
+            </div>
+            <div class="col-md-6">
+                <label for="phoneNumber" class="form-label">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" placeholder="">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
     </div>
 </div>
 

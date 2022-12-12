@@ -107,7 +107,7 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("/profile")
+    @PostMapping("/profile-update")
     @PreAuthorize("isAuthenticated()")
     public String updateUserProfile(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication,
                                     Model model) throws Exception {
