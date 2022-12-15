@@ -102,8 +102,7 @@ public class UserController {
     public String getProfilePage(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication,
                                  Model model){
         User user = userService.getUserByUsername(authentication.getName());
-        model.addAttribute("userId", user.getId());
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("user", user);
         return "profile";
     }
 

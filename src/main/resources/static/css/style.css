@@ -247,6 +247,23 @@ html, body, .container{
     margin-top: 10px;
 }
 
+#picture{
+    display: inline-block;
+    position: relative;
+    height: 130px;
+    width: 130px;
+    border: 1px solid #cfd1d4;
+    border-radius: 100%;
+    margin: 0 10px;
+    background-color: white;
+    overflow: hidden;
+}
+
+#picture img {
+    width: auto;
+    height: 100%;
+}
+
 #my-messages{
     position: absolute;
     right: 0px;
@@ -268,6 +285,10 @@ html, body, .container{
 
 .fa-plus{
     padding: 0 5px;
+}
+
+.profile-legend{
+    margin-top: 20px;
 }
 
 #success, #logout-success{
