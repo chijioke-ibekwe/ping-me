@@ -1,7 +1,6 @@
 package com.project.pingme.service.impl;
 
 import com.project.pingme.dto.ConnectRequestDTO;
-import com.project.pingme.dto.UserDTO;
 import com.project.pingme.entity.ConnectRequest;
 import com.project.pingme.entity.User;
 import com.project.pingme.enums.RequestStatus;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

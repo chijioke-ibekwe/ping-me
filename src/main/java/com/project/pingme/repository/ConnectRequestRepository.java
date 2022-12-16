@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface ConnectRequestRepository extends JpaRepository<ConnectRequest, Long> {
 
     @Query(value = "select * from connect_requests where sender_id=:senderId and (request_status=:requestStatus " +
-            "or request_status=:_requestStatus", nativeQuery = true)
+            "or request_status=:_requestStatus)", nativeQuery = true)
     List<ConnectRequest> findBySenderAndRequestStatus(@Param("senderId") Long senderId,
                                                       @Param("requestStatus") String requestStatus,
                                                       @Param("_requestStatus") String _requestStatus);
