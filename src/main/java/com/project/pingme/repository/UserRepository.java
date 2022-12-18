@@ -15,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     Optional<User> findByUsername(String username);
+
     @Query(value = "select * from users u where upper(first_name) like upper(concat('%', :name, '%')) or " +
             "upper(last_name) like upper(concat('%', :name, '%'))", nativeQuery = true)
     List<User> findByFirstNameOrLastNameContainingIgnoreCase(@Param("name") String name);
