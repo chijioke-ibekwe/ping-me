@@ -80,8 +80,7 @@ public class UserController {
     public String searchUserPage(@ModelAttribute("searchDTO") SearchUserDTO searchDTO, Authentication authentication,
                                Model model){
         User user = userService.getUserByUsername(authentication.getName());
-        model.addAttribute("userId", user.getId());
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("user", user);
         return "find";
     }
 

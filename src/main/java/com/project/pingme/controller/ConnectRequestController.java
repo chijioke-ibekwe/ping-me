@@ -48,9 +48,7 @@ public class ConnectRequestController {
     @PreAuthorize("isAuthenticated()")
     public void sendConnectionRequest(@RequestBody ConnectRequestDTO request, Authentication authentication){
         User authUser = userService.getUserByUsername(authentication.getName());
-        log.debug("Saving connection request...");
         ConnectRequestDTO response = connectRequestService.createConnectRequest(authUser, request);
-        log.debug("Connection request saved...");
 
         messagingTemplate.convertAndSendToUser(
                 response.getRecipientId().toString(),"/queue/connections", response);
@@ -62,9 +60,8 @@ public class ConnectRequestController {
                                     @DestinationVariable Long requestId,
                                     Authentication authentication){
         User authUser = userService.getUserByUsername(authentication.getName());
-        log.debug("Saving connection request...");
-        ConnectRequestDTO response = connectRequestService.updateConnectRequestStatus(authUser, requestId, RequestStatus.valueOf(requestStatus.getStatus()));
-        log.debug("Connection request saved...");
+        ConnectRequestDTO response = connectRequestService.updateConnectRequestStatus(authUser, requestId,
+                RequestStatus.valueOf(requestStatus.getStatus()));
 
         if (Objects.nonNull(response))
             messagingTemplate.convertAndSendToUser(response.getRecipientId().toString(),"/queue/connections", response);

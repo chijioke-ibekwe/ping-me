@@ -48,8 +48,7 @@ public class ChatController {
         UserDTO contactDTO = Mapper.mapToUserDTO(contact);
 
         model.addAttribute("messages", messages);
-        model.addAttribute("userId", authUser.getId());
-        model.addAttribute("username", authUser.getUsername());
+        model.addAttribute("user", authUser);
         model.addAttribute("userContactId", userContactId);
         model.addAttribute("contact", contactDTO);
         return "chat";
@@ -59,9 +58,7 @@ public class ChatController {
     @PreAuthorize("isAuthenticated()")
     public void createChat(@RequestBody ChatDTO chatform, Authentication authentication){
         User authUser = userService.getUserByUsername(authentication.getName());
-        log.debug("Adding message starting ...");
         MessageDTO messageDTO = messageService.addMessage(authUser, chatform);
-        log.debug("Adding message completed ...");
 
         messagingTemplate.convertAndSendToUser(
                 messageDTO.getRecipientId().toString(),"/queue/messages", messageDTO);
