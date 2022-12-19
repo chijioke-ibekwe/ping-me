@@ -93,6 +93,7 @@ public class UserController {
                 !searchDTO.getSearchInput().isEmpty()){
             model.addAttribute("users", userService.searchUsersBy(authUser, searchDTO));
         }
+        model.addAttribute("user", authUser);
         return "find";
     }
 
@@ -120,6 +121,7 @@ public class UserController {
             userService.updateUserProfile(authUser, updateUserDTO);
         }
 
+        model.addAttribute("user", authUser);
         return "profile";
     }
 }

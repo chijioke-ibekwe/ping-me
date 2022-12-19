@@ -67,7 +67,7 @@
     </nav>
 
     <div class="container" id="message-container">
-        <span id="current-user-id" th:text="${user.userId}" hidden></span>
+        <span id="current-user-id" th:text="${user.id}" hidden></span>
         <span id="current-username" th:text="${user.username}" hidden></span>
         <span id="contact-id" th:text="${userContactId}" hidden></span>
         <div th:each="msg : ${messages}" th:unless="${msg.messageText.isEmpty()}">

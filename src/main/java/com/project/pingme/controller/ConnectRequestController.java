@@ -39,8 +39,7 @@ public class ConnectRequestController {
     public String getRequests(Authentication authentication, Model model){
         User authUser = userService.getUserByUsername(authentication.getName());
         model.addAttribute("requests", connectRequestService.getReceivedConnectRequests(authUser));
-        model.addAttribute("userId", authUser.getId());
-        model.addAttribute("username", authUser.getUsername());
+        model.addAttribute("user", authUser);
         return "request";
     }
 

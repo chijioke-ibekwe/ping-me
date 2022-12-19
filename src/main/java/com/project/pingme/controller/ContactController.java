@@ -28,8 +28,7 @@ public class ContactController {
     public String getContacts(Authentication authentication, Model model){
         User authUser = userService.getUserByUsername(authentication.getName());
         model.addAttribute("contacts", userContactService.getContactDTOS(authUser));
-        model.addAttribute("userId", authUser.getId());
-        model.addAttribute("username", authUser.getUsername());
+        model.addAttribute("user", authUser);
         return "contact";
     }
 }
