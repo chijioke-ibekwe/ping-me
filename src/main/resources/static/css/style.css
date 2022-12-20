@@ -297,8 +297,9 @@ html, body, .container{
 }
 
 #failure, #login-error{
-    color: red;
+    color: #ca0034;
     height: 24px;
+    font-weight: 20px !important;
 }
 
 #error-placeholder{

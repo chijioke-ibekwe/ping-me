@@ -47,8 +47,7 @@ class ContactControllerTest {
         this.mockMvc.perform(get("/contact"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("contacts", testUtil.getContactDTOS()))
-                .andExpect(model().attribute("userId", 2L))
-                .andExpect(model().attribute("username", "john.doe"))
+                .andExpect(model().attribute("user", testUtil.getUser()))
                 .andExpect(view().name("contact"));
 
     }

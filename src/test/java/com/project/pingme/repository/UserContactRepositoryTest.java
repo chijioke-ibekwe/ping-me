@@ -43,8 +43,8 @@ public class UserContactRepositoryTest {
 
         Arrays.asList(userContactOne, userContactTwo, userContactThree).forEach(r -> testEntityManager.persistAndFlush(r));
 
-        UserContact result = userContactRepository.findByHostAndContact(userContactThree.getId(),
-                userContactTwo.getId());
+        UserContact result = userContactRepository.findByHostAndContact(userThree.getId(),
+                userTwo.getId());
 
         assertThat(result.getHost().getUsername()).isEqualTo("jane.doe");
         assertThat(result.getContact().getUsername()).isEqualTo("mark.pitt");

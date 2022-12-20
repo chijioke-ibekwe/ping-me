@@ -49,8 +49,7 @@ class ConnectRequestControllerTest {
         this.mockMvc.perform(get("/request"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("requests", testUtil.getConnectRequestDTOS()))
-                .andExpect(model().attribute("userId", 2L))
-                .andExpect(model().attribute("username", "john.doe"))
+                .andExpect(model().attribute("user", testUtil.getUser()))
                 .andExpect(view().name("request"));
 
     }
