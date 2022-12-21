@@ -19,9 +19,10 @@ For backend
 2. Spring Data JPA
 3. Spring Security
 4. Spring WebSocket
-5. Lombok
-6. PostgreSQL Driver
-7. Liquibase
+5. AWS Java SDK
+6. Lombok
+7. PostgreSQL Driver
+8. Liquibase
 
 For frontend
 1. Thymeleaf Templating Engine
