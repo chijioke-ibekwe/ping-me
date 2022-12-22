@@ -294,7 +294,6 @@ html, body, .container{
 #success, #logout-success{
     color: white;
     background-color: green;
-    height: 100%;
     width: 100%;
     padding: 10px 10px;
 }
@@ -302,7 +301,6 @@ html, body, .container{
 #failure, #login-error{
     color: white;
     background-color: #ca0034;
-    height: 100%;
     width: 100%;
     padding: 10px 10px;
 }

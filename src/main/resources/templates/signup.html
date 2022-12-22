@@ -39,36 +39,38 @@
         </div>
     </nav>
     <div class="container">
-        <form action="#" th:action="@{/user/signup}" th:object="${signupDTO}" method="post" class="col-sm">
-            <h2 id="form-header">Sign Up</h2>
-            <div id="success" th:if="${signupSuccess}" th:text="${successMessage}"></div>
-            <div id="failure" th:if="${signupError != null}" th:text="${signupError}"></div>
-            <div id="error-placeholder" th:unless="${signupSuccess == true OR signupError != null}"></div>
-            <div class="form-group">
-                <label for="firstname">First Name</label>
-                <input type="text" class="form-control" id="firstname" placeholder="First Name" th:field="*{firstName}" required>
-            </div>
-            <div class="form-group">
-                <label for="lastname">Last Name</label>
-                <input type="text" class="form-control" id="lastname" placeholder="Last Name" th:field="*{lastName}" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{username}" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm-password" placeholder="Password" th:field="*{confirmPassword}" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <div class="form-group">
-                <span>Already have an account? </span><label><a th:href="@{/user/login}">Login</a></label>
-            </div>
-        </form>
+        <div class="row justify-content-center">
+            <form action="#" th:action="@{/user/signup}" th:object="${signupDTO}" method="post" class="col-md-6 col-lg-5">
+                <h2 id="form-header">Sign Up</h2>
+                <div id="success" th:if="${signupSuccess}" th:text="${successMessage}"></div>
+                <div id="failure" th:if="${signupError != null}" th:text="${signupError}"></div>
+                <div id="error-placeholder" th:unless="${signupSuccess == true OR signupError != null}"></div>
+                <div class="form-group">
+                    <label for="firstname">First Name</label>
+                    <input type="text" class="form-control" id="firstname" placeholder="First Name" th:field="*{firstName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last Name</label>
+                    <input type="text" class="form-control" id="lastname" placeholder="Last Name" th:field="*{lastName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Username" th:field="*{username}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirm-password" placeholder="Password" th:field="*{confirmPassword}" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group">
+                    <span>Already have an account? </span><label><a th:href="@{/user/login}">Login</a></label>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script th:src="@{/js/bootstrap.js}"></script>
