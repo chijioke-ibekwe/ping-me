@@ -292,14 +292,19 @@ html, body, .container{
 }
 
 #success, #logout-success{
-    color: green;
-    height: 24px;
+    color: white;
+    background-color: green;
+    height: 100%;
+    width: 100%;
+    padding: 10px 10px;
 }
 
 #failure, #login-error{
-    color: #ca0034;
-    height: 24px;
-    font-weight: 20px !important;
+    color: white;
+    background-color: #ca0034;
+    height: 100%;
+    width: 100%;
+    padding: 10px 10px;
 }
 
 #error-placeholder{
