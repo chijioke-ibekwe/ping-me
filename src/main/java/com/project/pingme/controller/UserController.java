@@ -32,17 +32,17 @@ public class UserController {
 
     @GetMapping("/login")
     public String getLoginPage(){
-        return "login";
+        return "user/login";
     }
 
     @GetMapping("/logout")
     public String logoutUser(){
-        return "login";
+        return "user/login";
     }
 
     @GetMapping("/signup")
     public String getSignUpPage(@ModelAttribute("signupDTO") SignupDTO signupDTO, Model model){
-        return "signup";
+        return "user/signup";
     }
 
     @PostMapping("/signup")
@@ -72,7 +72,7 @@ public class UserController {
         } else {
             model.addAttribute("signupError", signupError);
         }
-        return "signup";
+        return "user/signup";
     }
 
     @GetMapping("/search")
@@ -81,7 +81,7 @@ public class UserController {
                                Model model){
         User user = userService.getUserByUsername(authentication.getName());
         model.addAttribute("user", user);
-        return "find";
+        return "user/find";
     }
 
     @GetMapping("/search-user")
@@ -94,7 +94,7 @@ public class UserController {
             model.addAttribute("users", userService.searchUsersBy(authUser, searchDTO));
         }
         model.addAttribute("user", authUser);
-        return "find";
+        return "user/find";
     }
 
     @GetMapping("/profile")
@@ -103,7 +103,7 @@ public class UserController {
                                  Model model){
         User user = userService.getUserByUsername(authentication.getName());
         model.addAttribute("user", user);
-        return "profile";
+        return "user/profile";
     }
 
     @PostMapping("/profile-update")
@@ -122,6 +122,6 @@ public class UserController {
         }
 
         model.addAttribute("user", authUser);
-        return "profile";
+        return "user/profile";
     }
 }

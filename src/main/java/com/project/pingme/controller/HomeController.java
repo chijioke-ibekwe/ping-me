@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping
     public String getLandingPage(){
-        return "landing";
+        return "home/landing";
     }
 }

@@ -51,7 +51,7 @@ public class ChatController {
         model.addAttribute("user", authUser);
         model.addAttribute("userContactId", userContactId);
         model.addAttribute("contact", contactDTO);
-        return "chat";
+        return "chat/chat";
     }
 
     @MessageMapping("/chat")

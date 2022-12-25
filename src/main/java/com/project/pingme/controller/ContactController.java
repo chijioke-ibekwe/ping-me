@@ -4,7 +4,6 @@ import com.project.pingme.entity.User;
 import com.project.pingme.service.UserContactService;
 import com.project.pingme.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -29,6 +28,6 @@ public class ContactController {
         User authUser = userService.getUserByUsername(authentication.getName());
         model.addAttribute("contacts", userContactService.getContactDTOS(authUser));
         model.addAttribute("user", authUser);
-        return "contact";
+        return "contact/contact";
     }
 }

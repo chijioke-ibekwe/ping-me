@@ -40,7 +40,7 @@ public class ConnectRequestController {
         User authUser = userService.getUserByUsername(authentication.getName());
         model.addAttribute("requests", connectRequestService.getReceivedConnectRequests(authUser));
         model.addAttribute("user", authUser);
-        return "request";
+        return "connect/request";
     }
 
     @MessageMapping("/request/send")
