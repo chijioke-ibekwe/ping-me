@@ -41,14 +41,14 @@ class UserControllerTest {
     void testAccessToLoginPageForAnonymousUsers() throws Exception {
         this.mockMvc.perform(get("/user/login"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("login"));
+                .andExpect(view().name("user/login"));
     }
 
     @Test
     void testAccessToSignUpPageForAnonymousUsers() throws Exception {
         this.mockMvc.perform(get("/user/signup"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("signup"));
+                .andExpect(view().name("user/signup"));
     }
 
     @Test
@@ -127,7 +127,7 @@ class UserControllerTest {
                         .param("searchCriteria", "BY_NAME")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("find"))
+                .andExpect(view().name("user/find"))
                 .andExpect(model().attribute("users", Collections.singletonList(user)));
     }
 
@@ -144,7 +144,7 @@ class UserControllerTest {
                         .param("searchCriteria", "BY_NAME")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("find"));
+                .andExpect(view().name("user/find"));
     }
 
 }

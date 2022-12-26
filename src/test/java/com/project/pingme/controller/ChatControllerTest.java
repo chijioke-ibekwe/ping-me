@@ -63,7 +63,7 @@ class ChatControllerTest {
                         .id(3L)
                         .fullName("Jane Doe")
                         .username("jane.doe").build()))
-                .andExpect(view().name("chat"));
+                .andExpect(view().name("chat/chat"));
 
     }
 }

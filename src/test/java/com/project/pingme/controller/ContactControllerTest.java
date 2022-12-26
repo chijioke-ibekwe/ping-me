@@ -48,7 +48,7 @@ class ContactControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("contacts", testUtil.getContactDTOS()))
                 .andExpect(model().attribute("user", testUtil.getUser()))
-                .andExpect(view().name("contact"));
+                .andExpect(view().name("contact/contact"));
 
     }
 }

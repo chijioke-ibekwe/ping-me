@@ -50,7 +50,7 @@ class ConnectRequestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("requests", testUtil.getConnectRequestDTOS()))
                 .andExpect(model().attribute("user", testUtil.getUser()))
-                .andExpect(view().name("request"));
+                .andExpect(view().name("connect/request"));
 
     }
 }
