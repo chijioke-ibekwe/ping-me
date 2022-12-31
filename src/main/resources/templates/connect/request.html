@@ -1,115 +1,72 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layouts/layout}">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Contacts</title>
-    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/bootstrap.css}">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>Requests</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+
     <script th:src="@{/js/script.js}"></script>
 </head>
 <body onload="requestsModalEvent();connect('connection');">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid d-flex">
-        <a class="navbar-brand" th:href="@{/user/login}">
-            <a class="navbar-brand" th:href="@{/user/login}">
-                <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png}" alt="icon" width="80" height="50">
-            </a>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/profile}">Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/contact}">Contacts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/user/search}">Find People You May Know</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/request}">Requests</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" href="#">Settings</a>
-                </li>
-            </ul>
-        </div>
-        <form class="ms-auto p-2" action="#" th:action="@{/user/logout}" method="POST">
-            <button class="btn btn-outline-success form-control me-2" type="submit">Logout</button>
-        </form>
-    </div>
-</nav>
-<div class="container">
-    <div>
-        <span id="current-user-id" th:text="${user.id}" hidden></span>
-        <span id="current-username" th:text="${user.username}" hidden></span>
-        <div id="contact-header" class="d-flex justify-content-start">
-            <span><i class="fa fa-address-card icon" aria-hidden="true"></i> Requests</span>
-        </div>
 
-        <div th:each="request : ${requests}" class="d-flex align-items-center justify-content-between" id="user-div">
-            <span class="d-flex align-items-center">
-                <span id="profile-picture">
-                    <a href="#" id="profile-picture-anchor">
-                        <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="50" height="50">
-                    </a>
+    <nav th:replace="fragments/general.html :: navbar" layout:fragment="navbar"></nav>
+
+    <div class="container" layout:fragment="page-container">
+        <div>
+            <span id="current-user-id" th:text="${user.id}" hidden></span>
+            <span id="current-username" th:text="${user.username}" hidden></span>
+            <div id="contact-header" class="d-flex justify-content-start">
+                <span><i class="fa fa-address-card icon" aria-hidden="true"></i> Requests</span>
+            </div>
+
+            <div th:each="request : ${requests}" class="d-flex align-items-center justify-content-between" id="user-div">
+                <span class="d-flex align-items-center">
+                    <span id="profile-picture">
+                        <a href="#" id="profile-picture-anchor">
+                            <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="50" height="50">
+                        </a>
+                    </span>
+                    <span id="search-user-name" th:text="${request.senderName}"></span>
                 </span>
-                <span id="search-user-name" th:text="${request.senderName}"></span>
-            </span>
-            <div>
-                <a class="btn btn-primary" id="reject-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#rejectRequestModal">Reject</a>
-                <a class="btn btn-success" id="accept-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#acceptRequestModal">Accept</a>
+                <div>
+                    <a class="btn btn-primary" id="reject-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#rejectRequestModal">Reject</a>
+                    <a class="btn btn-success" id="accept-request-button" th:attr="data-request-id=${request.requestId},data-request-sender-name=${request.senderName}" data-bs-toggle="modal" href="#acceptRequestModal">Accept</a>
+                </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="rejectRequestModal" tabindex="-1" aria-labelledby="rejectRequestModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Reject Request</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
+            <div class="modal fade" id="rejectRequestModal" tabindex="-1" aria-labelledby="rejectRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Reject Request</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="modal fade" id="acceptRequestModal" tabindex="-1" aria-labelledby="acceptRequestModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Accept Request</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
+            <div class="modal fade" id="acceptRequestModal" tabindex="-1" aria-labelledby="acceptRequestModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Accept Request</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body"></div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a class="btn btn-success proceed-button" data-bs-dismiss="modal">Confirm</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<script th:src="@{/js/bootstrap.js}"></script>
-<script th:src="@{/js/jquery-slim.min.js}"></script>
-<script th:src="@{/js/popper.min.js}"></script>
 </body>
 </html>
