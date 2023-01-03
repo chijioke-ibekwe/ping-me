@@ -42,5 +42,57 @@
         </div>
     </nav>
 
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="login-navbar">
+        <div class="container-fluid d-flex">
+            <a class="navbar-brand" th:href="@{/}">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png}" alt="icon" width="80" height="50">
+                </a>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="ms-auto p-2" action="#" th:action="@{/user/signup}" method="GET">
+                <button class="btn btn-outline-success form-control me-2" type="submit">Sign Up</button>
+            </form>
+        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="signup-navbar">
+        <div class="container-fluid d-flex">
+            <a class="navbar-brand" th:href="@{/}">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/ping-me-icon-1.png}" alt="icon" width="80" height="50">
+                </a>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="ms-auto p-2" action="#" th:action="@{/user/login}" method="GET">
+                <button class="btn btn-outline-success form-control me-2" type="submit">Login</button>
+            </form>
+        </div>
+    </nav>
+
 </body>
 </html>
