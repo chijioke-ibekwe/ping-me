@@ -20,23 +20,25 @@
                 <div id="picture">
                     <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="130" height="130">
                 </div>
+
             </div>
-            <form class="row g-3 profile-legend">
+            <form class="row g-3 profile-legend" th:action="@{/user/profile-update}" th:object="${updateUserDTO}" method="post">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" th:value="${user.firstName}">
+                    <input type="text" class="form-control" id="firstName" th:value="${user.firstName}" th:field="*{firstName}">
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" th:value="${user.lastName}">
+                    <input type="text" class="form-control" id="lastName" th:value="${user.lastName}" th:field="*{lastName}">
                 </div>
                 <div class="col-md-6">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" th:value="${user.username}">
+                    <input type="text" class="form-control" id="username" th:value="${user.username}" th:field="*{username}">
                 </div>
                 <div class="col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNumber" th:value="${user.phoneNumberWithCountryCode}">
+                    <input type="text" class="form-control" id="phoneNumber" th:value="${user.phoneNumberWithCountryCode}"
+                           th:field="*{phoneNumber}" placeholder="08011112222">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Save</button>

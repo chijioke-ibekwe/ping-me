@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
         modelMapper.map(updateUserDTO, authUser);
 
-        String url = amazonService.uploadPic(null, updateUserDTO.getPictureUrl());
+        String url = amazonService.uploadPic(null, updateUserDTO.getBase64image());
 
         authUser.setDisplayPictureUrl(url);
 
