@@ -242,3 +242,6 @@ function activateNavLink(nav){
     }
     auth_nav_links[nav].classList.add("active");
 }
+
+function uploadImage(){
+}

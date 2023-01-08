@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <script th:src="@{/js/script.js}"></script>
 </head>
-<body onload="connect('connection')">
+<body onload="connect('connection');uploadImage();">
 
     <nav th:replace="fragments/general.html :: navbar" layout:fragment="navbar"></nav>
 
@@ -20,7 +20,10 @@
                 <div id="picture">
                     <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="130" height="130">
                 </div>
-
+                <div class="mb-3">
+                    <label for="file-upload" class="form-label">Upload Image</label>
+                    <input class="form-control form-control-sm" id="file-upload" type="file">
+                </div>
             </div>
             <form class="row g-3 profile-legend" th:action="@{/user/profile-update}" th:object="${updateUserDTO}" method="post">
                 <div class="col-md-6">
