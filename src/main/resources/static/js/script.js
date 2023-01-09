@@ -244,4 +244,12 @@ function activateNavLink(nav){
 }
 
 function uploadImage(){
+
+    const image_upload_element = document.querySelector("#file-upload");
+    let base64Image = "";
+
+    image_upload_element.addEventListener("change", function(){
+        const reader = new FileReader();
+
+    })
 }
