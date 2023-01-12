@@ -38,7 +38,7 @@ function connect(type) {
         case "Requests":
             activateNavLink(3);
             break;
-        case "Settings":
+        case "Setting":
             activateNavLink(4);
     }
 };
