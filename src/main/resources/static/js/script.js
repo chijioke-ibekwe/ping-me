@@ -24,6 +24,23 @@ function connect(type) {
             }
         });
     }
+
+    switch (document.title) {
+        case "Profile":
+            activateNavLink(0);
+            break;
+        case "Contacts":
+            activateNavLink(1);
+            break;
+        case "Find Users":
+            activateNavLink(2);
+            break;
+        case "Requests":
+            activateNavLink(3);
+            break;
+        case "Settings":
+            activateNavLink(4);
+    }
 };
 
 async function onConnected(type){
@@ -215,4 +232,13 @@ function stickyNav(){
 function play() {
     var audio = new Audio('https://drive.google.com/uc?id=12eRadqgLXMkp2ITU7SzdpzoaKV6HdAI3');
     audio.play();
+}
+
+function activateNavLink(nav){
+    var auth_nav_links = document.querySelectorAll(".auth-nav-link");
+
+    for(let i = 0; i < auth_nav_links.length ; i++){
+        auth_nav_links[i].classList.remove("active");
+    }
+    auth_nav_links[nav].classList.add("active");
 }
