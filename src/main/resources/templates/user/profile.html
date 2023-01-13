@@ -12,6 +12,7 @@
     <nav th:replace="fragments/general.html :: navbar" layout:fragment="navbar"></nav>
 
     <div class="container" layout:fragment="page-container">
+        <span id="current-user-id" th:text="${user.id}" hidden></span>
         <div>
             <div id="contact-header" class="d-flex justify-content-start">
                 <span><i class="fa fa-user icon" aria-hidden="true"></i> Profile</span>
