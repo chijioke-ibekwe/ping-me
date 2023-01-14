@@ -15,7 +15,10 @@ import com.project.pingme.service.AmazonService;
 import com.project.pingme.service.HashService;
 import com.project.pingme.service.UserService;
 import com.project.pingme.util.Formatter;
+import org.modelmapper.AbstractCondition;
+import org.modelmapper.Condition;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,18 @@ public class UserServiceImpl implements UserService {
     private final UserContactRepository userContactRepository;
     private final HashService hashService;
     private final AmazonService amazonService;
+
+    Condition<?, ?> isStringBlank = new AbstractCondition<Object, Object>() {
+        @Override
+        public boolean applies(MappingContext<Object, Object> context) {
+            if(context.getSource() instanceof String) {
+                return null!=context.getSource() && !"".equals(context.getSource());
+            } else {
+                return context.getSource() != null;
+            }
+        }
+    };
+
 
     public UserServiceImpl(UserRepository userRepository, ConnectRequestRepository connectRequestRepository,
                            UserContactRepository userContactRepository, HashService hashService,
@@ -119,7 +134,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User updateUserProfile(User authUser, UpdateUserDTO updateUserDTO) throws Exception {
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.getConfiguration().setSkipNullEnabled(true).setMatchingStrategy(STRICT);
+        modelMapper.getConfiguration()
+                .setSkipNullEnabled(true)
+                .setPropertyCondition(isStringBlank)
+                .setMatchingStrategy(STRICT);
 
         modelMapper.map(updateUserDTO, authUser);
 

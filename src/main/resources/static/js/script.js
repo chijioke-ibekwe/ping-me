@@ -243,17 +243,34 @@ function activateNavLink(nav){
     auth_nav_links[nav].classList.add("active");
 }
 
-function uploadImage(){
+function processImageUpload(){
+    console.log("Image upload function started");
     const image_upload_element = document.querySelector("#file-upload");
-    let base64Image = "";
 
-    image_upload_element.addEventListener("change", function(){
-        const reader = new FileReader();
-
-        reader.addEventListener("load", function(){
-            base64Image = reader.result;
-            console.log(base64Image);
-        })
-
+    image_upload_element.addEventListener("change", function(e){
+        uploadImage(e);
     })
+    console.log("Image upload function ended");
+}
+
+async function uploadImage(event) {
+    const base64InputField = document.querySelector("#image");
+    const file = event.target.files[0];
+    const base64Image = await convertBase64(file);
+    base64InputField.value = base64Image;
+}
+
+function convertBase64(file) {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+
+        fileReader.onload = () => {
+            resolve(fileReader.result);
+        };
+
+        fileReader.onerror = (error) => {
+            reject(error);
+        };
+    });
 }

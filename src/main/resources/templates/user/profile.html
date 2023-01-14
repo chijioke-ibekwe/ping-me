@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <script th:src="@{/js/script.js}"></script>
 </head>
-<body onload="connect('connection');uploadImage();">
+<body onload="connect('connection');processImageUpload();">
 
     <nav th:replace="fragments/general.html :: navbar" layout:fragment="navbar"></nav>
 
@@ -29,20 +29,22 @@
             <form class="row g-3 profile-legend" th:action="@{/user/profile-update}" th:object="${updateUserDTO}" method="post">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" th:value="${user.firstName}" th:field="*{firstName}">
+                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" th:value="${user.lastName}" th:field="*{lastName}">
+                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
                 </div>
                 <div class="col-md-6">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" th:value="${user.username}" th:field="*{username}">
+                    <input type="text" class="form-control" id="username" th:field="*{username}">
                 </div>
                 <div class="col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNumber" th:value="${user.phoneNumberWithCountryCode}"
-                           th:field="*{phoneNumber}" placeholder="08011112222">
+                    <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="08011112222">
+                </div>
+                <div class="col-md-6" hidden>
+                    <input type="text" class="form-control" id="image" th:field="*{base64image}">
                 </div>
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Save</button>
