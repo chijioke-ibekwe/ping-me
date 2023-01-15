@@ -19,7 +19,7 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div id="picture">
-                    <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}" alt="icon" width="130" height="130">
+                    <img th:src="@{${user.displayPictureUrl}}" alt="icon" width="130" height="130">
                 </div>
                 <div class="mb-3">
                     <label for="file-upload" class="form-label">Upload Image</label>
