@@ -110,7 +110,6 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     public String updateUserProfile(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication,
                                     Model model) throws Exception {
-        log.debug("Update user dto::{}", updateUserDTO);
         User authUser = userService.getUserByUsername(authentication.getName());
 
         String updateError = null;
