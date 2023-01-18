@@ -19,5 +19,5 @@ public class UpdateUserDTO {
 
     private String phoneNumber;
 
-    private String base64image;
+    private String base64Image;
 }

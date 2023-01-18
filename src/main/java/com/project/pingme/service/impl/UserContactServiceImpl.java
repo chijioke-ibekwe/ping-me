@@ -45,6 +45,7 @@ public class UserContactServiceImpl implements UserContactService {
                         .contactId(uc.getContact().getId())
                         .firstName(uc.getContact().getFirstName())
                         .lastName(uc.getContact().getLastName())
+                        .displayPictureUrl(uc.getContact().getDisplayPictureUrl())
                         .build();
             }else{
                 contact = ContactDTO.builder()
@@ -52,6 +53,7 @@ public class UserContactServiceImpl implements UserContactService {
                         .contactId(uc.getHost().getId())
                         .firstName(uc.getHost().getFirstName())
                         .lastName(uc.getHost().getLastName())
+                        .displayPictureUrl(uc.getHost().getDisplayPictureUrl())
                         .build();
             }
             contacts.add(contact);
