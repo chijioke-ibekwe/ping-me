@@ -244,13 +244,17 @@ function activateNavLink(nav){
 }
 
 function processImageUpload(){
-    console.log("Image upload function started");
+//    const dataDiv = document.querySelector("#data-div");
+//    document.querySelector("#firstName").value = dataDiv.getAttribute('data-first-name');
+//    document.querySelector("#lastName").value = dataDiv.getAttribute('data-last-name');
+//    document.querySelector("#username").value = dataDiv.getAttribute('data-user-name');
+//    document.querySelector("#phoneNumber").value = dataDiv.getAttribute('data-phone-number');
+
     const image_upload_element = document.querySelector("#file-upload");
 
     image_upload_element.addEventListener("change", function(e){
         uploadImage(e);
     })
-    console.log("Image upload function ended");
 }
 
 async function uploadImage(event) {

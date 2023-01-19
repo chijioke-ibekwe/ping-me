@@ -141,9 +141,10 @@ public class UserServiceImpl implements UserService {
 
         modelMapper.map(updateUserDTO, authUser);
 
-        String url = amazonService.uploadPic(null, updateUserDTO.getBase64Image());
-
-        authUser.setDisplayPictureUrl(url);
+        if(!updateUserDTO.getBase64Image().isEmpty()) {
+            String url = amazonService.uploadPic(null, updateUserDTO.getBase64Image());
+            authUser.setDisplayPictureUrl(url);
+        }
 
         return userRepository.save(authUser);
     }

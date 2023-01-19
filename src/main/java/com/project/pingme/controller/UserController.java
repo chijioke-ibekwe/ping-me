@@ -110,10 +110,12 @@ public class UserController {
     @PreAuthorize("isAuthenticated()")
     public String updateUserProfile(@ModelAttribute("updateUserDTO") UpdateUserDTO updateUserDTO, Authentication authentication,
                                     Model model) throws Exception {
+        log.debug("DTO::{}", updateUserDTO);
         User authUser = userService.getUserByUsername(authentication.getName());
 
         String updateError = null;
-        if(Objects.nonNull(updateUserDTO.getUsername()) && userService.isAvailable(updateUserDTO.getUsername())){
+        if(Objects.nonNull(updateUserDTO.getUsername()) && !authUser.getUsername().equals(updateUserDTO.getUsername()) &&
+                userService.isAvailable(updateUserDTO.getUsername())){
             updateError = "Username already exists";
         }
 

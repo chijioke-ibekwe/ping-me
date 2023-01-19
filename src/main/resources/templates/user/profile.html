@@ -26,22 +26,24 @@
                     <input class="form-control form-control-sm" id="file-upload" type="file" accept="image/png, image/jpg">
                 </div>
             </div>
+<!--            <div id="data-div" th:attr="data-first-name=${user.firstName},data-last-name=${user.lastName},data-user-name=${user.username},-->
+<!--                data-phone-number=${user.phoneNumber}" hidden></div>-->
             <form class="row g-3 profile-legend" th:action="@{/user/profile-update}" th:object="${updateUserDTO}" method="post">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
-                    <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+                    <input type="text" class="form-control" id="firstName" th:attr="name='firstName'" th:value="${user.firstName}">
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+                    <input type="text" class="form-control" id="lastName" th:attr="name='lastName'" th:value="${user.lastName}">
                 </div>
                 <div class="col-md-6">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" th:field="*{username}">
+                    <input type="text" class="form-control" id="username" th:attr="name='username'" th:value="${user.username}">
                 </div>
                 <div class="col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="E.g 0802...">
+                    <input type="text" class="form-control" id="phoneNumber" th:attr="name='phoneNumber'" th:value="${user.phoneNumber}">
                 </div>
                 <div class="col-md-6" hidden>
                     <input type="text" class="form-control" id="image" th:field="*{base64Image}">
