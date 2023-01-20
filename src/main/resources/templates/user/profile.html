@@ -26,8 +26,6 @@
                     <input class="form-control form-control-sm" id="file-upload" type="file" accept="image/png, image/jpg">
                 </div>
             </div>
-<!--            <div id="data-div" th:attr="data-first-name=${user.firstName},data-last-name=${user.lastName},data-user-name=${user.username},-->
-<!--                data-phone-number=${user.phoneNumber}" hidden></div>-->
             <form class="row g-3 profile-legend" th:action="@{/user/profile-update}" th:object="${updateUserDTO}" method="post">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name</label>
