@@ -116,7 +116,7 @@ public class UserController {
         String updateError = null;
         if(Objects.nonNull(updateUserDTO.getUsername()) && !authUser.getUsername().equals(updateUserDTO.getUsername()) &&
                 userService.isAvailable(updateUserDTO.getUsername())){
-            updateError = "Username already exists";
+            updateError = "Invalid";
         }
 
         if (Objects.isNull(updateError)){
@@ -124,6 +124,7 @@ public class UserController {
         }
 
         model.addAttribute("user", authUser);
+        model.addAttribute("error", updateError);
         return "user/profile";
     }
 }

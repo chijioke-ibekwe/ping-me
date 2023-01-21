@@ -309,6 +309,14 @@ html, body, .container{
     height: 24px;
 }
 
+#invalid-username {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+  color: #dc3545;
+}
+
 .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;

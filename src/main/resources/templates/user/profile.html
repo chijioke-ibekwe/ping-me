@@ -38,6 +38,9 @@
                 <div class="col-md-6">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" th:attr="name='username'" th:value="${user.username}">
+                    <div th:unless="${error == null}" id="invalid-username">
+                        Username already exists.
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>
