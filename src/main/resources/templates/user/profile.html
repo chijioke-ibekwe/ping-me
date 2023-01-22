@@ -19,7 +19,8 @@
             </div>
             <div class="d-flex justify-content-center">
                 <div id="picture">
-                    <img th:src="@{${user.displayPictureUrl}}" alt="icon" width="130" height="130">
+                    <img th:src="${user.displayPictureUrl != null ? user.displayPictureUrl :
+                    'https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg'}" alt="icon" width="130" height="130">
                 </div>
                 <div class="mb-3">
                     <label for="file-upload" class="form-label">Upload Image</label>
@@ -38,9 +39,7 @@
                 <div class="col-md-6">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" class="form-control" id="username" th:attr="name='username'" th:value="${user.username}">
-                    <div th:unless="${error == null}" id="invalid-username">
-                        Username already exists.
-                    </div>
+                    <div th:unless="${error == null}" id="invalid-username">Username already exists.</div>
                 </div>
                 <div class="col-md-6">
                     <label for="phoneNumber" class="form-label">Phone Number</label>

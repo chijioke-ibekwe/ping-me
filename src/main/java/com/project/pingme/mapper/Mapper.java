@@ -15,6 +15,7 @@ public class Mapper {
                 .fullName(Formatter.formatUserFullName(user))
                 .username(user.getUsername())
                 .phoneNumber(user.getPhoneNumber())
+                .displayPictureUrl(user.getDisplayPictureUrl())
                 .build();
     }
 

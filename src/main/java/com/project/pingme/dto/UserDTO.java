@@ -17,4 +17,5 @@ public class UserDTO {
     private String phoneNumber;
     private boolean requestSent;
     private boolean contact;
+    private String displayPictureUrl;
 }

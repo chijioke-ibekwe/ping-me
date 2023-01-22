@@ -16,7 +16,8 @@
             <div class="d-flex align-items-center">
                 <span id="profile-picture">
                     <a href="#" id="profile-picture-anchor">
-                        <img th:src="@{https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg}"
+                        <img th:src="${contact.displayPictureUrl != null ? contact.displayPictureUrl :
+                        'https://ping-me-resources.s3.us-east-2.amazonaws.com/dummy-profile-picture.jpg'}"
                              alt="icon" width="50" height="50">
                     </a>
                 </span>
