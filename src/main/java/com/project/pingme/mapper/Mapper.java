@@ -26,6 +26,7 @@ public class Mapper {
                 .recipientName(Formatter.formatUserFullName(connectRequest.getRecipient()))
                 .senderName(Formatter.formatUserFullName(connectRequest.getSender()))
                 .recipientId(connectRequest.getRecipient().getId())
+                .senderDisplayPictureUrl(connectRequest.getSender().getDisplayPictureUrl())
                 .build();
     }
 }

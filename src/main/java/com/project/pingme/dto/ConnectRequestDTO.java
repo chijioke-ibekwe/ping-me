@@ -16,4 +16,5 @@ public class ConnectRequestDTO {
     private String recipientName;
     private String senderName;
     private String activity;
+    private String senderDisplayPictureUrl;
 }

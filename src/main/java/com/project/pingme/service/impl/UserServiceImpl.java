@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDTO> searchUsersBy(User authUser, SearchUserDTO searchDTO){
         List<User> users = new ArrayList<>();
         List<UserDTO> userDTOS = new ArrayList<>();
+
         if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_NAME)){
             users = userRepository.findByFirstNameOrLastNameContainingIgnoreCase(searchDTO.getSearchInput());
         }else if(searchDTO.getSearchCriteria().equals(UserSearchCriteria.BY_PHONE_NUMBER)){
@@ -115,6 +116,7 @@ public class UserServiceImpl implements UserService {
                     .phoneNumber(user.getPhoneNumber())
                     .requestSent(requestSent)
                     .contact(Objects.nonNull(userContact))
+                    .displayPictureUrl(user.getDisplayPictureUrl())
                     .build();
 
             if(!authUser.equals(user))
